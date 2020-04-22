@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'mhbank.apps.PollsConfig',
+    'mhbank.apps.MhbankConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
