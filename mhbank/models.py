@@ -17,6 +17,8 @@ class Account(models.Model):
     def __str__(self):
         return self.user.username
 
+    def numberOfAdds(self):
+        return len(self.question_set.all())
 
 class Source(models.Model):
     name = models.CharField(max_length=200)

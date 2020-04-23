@@ -43,7 +43,15 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class AccountAdmin(admin.ModelAdmin):
+    list_display = ('user', 'numberOfAdds')
     form = AccountForm
+
+    def has_view_permission(self, request, obj=None):
+        return True
+    
+    def has_module_permission(self, request):
+        return True
+
 
 # admin.site.register(Question)
 admin.site.register(Account, AccountAdmin)
