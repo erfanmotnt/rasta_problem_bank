@@ -1,17 +1,28 @@
+from django import forms
 from django.contrib import admin
+from django import forms
 from django.utils import timezone
 
 from .models import Question, Account, Tag, Sub_tag
+
+class QuestionForm(forms.ModelForm):
+    VERIFICATIONS = (
+        ('W', 'Waiting'),
+        ('R', 'Review'),
+        ('C', 'Checked')
+    )
+
+    verification_status = forms.ChoiceField(choices=VERIFICATIONS)
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     fields = ['name', 'level', 'verification_status', 'text', 'answer', 'source', 'events',
      'appropriate_grades_min', 'appropriate_grades_max', 'tags', 'sub_tags', 'question_maker', 'last_change_date']
-    
     readonly_fields = ['question_maker', 'last_change_date']
     
     list_display = ('name', 'question_maker', 'last_change_date')
-
+    list_filter = ['verification_status', 'question_maker']
+    form = QuestionForm
     #events only for admin ...
     #vertify only for mentors and admin
     #all defualt saved for each users
@@ -38,6 +49,8 @@ class QuestionAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return True
+
+
 
 
 # admin.site.register(Question)
