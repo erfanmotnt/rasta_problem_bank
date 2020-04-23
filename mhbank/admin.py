@@ -1,18 +1,9 @@
-from django import forms
 from django.contrib import admin
 from django import forms
 from django.utils import timezone
 
 from .models import Question, Account, Tag, Sub_tag
-
-class QuestionForm(forms.ModelForm):
-    VERIFICATIONS = (
-        ('W', 'Waiting'),
-        ('R', 'Review'),
-        ('C', 'Checked')
-    )
-
-    verification_status = forms.ChoiceField(choices=VERIFICATIONS)
+from .forms import QuestionForm, AccountForm
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
@@ -51,10 +42,11 @@ class QuestionAdmin(admin.ModelAdmin):
         return True
 
 
-
+class AccountAdmin(admin.ModelAdmin):
+    form = AccountForm
 
 # admin.site.register(Question)
-admin.site.register(Account)
+admin.site.register(Account, AccountAdmin)
 
 class SubTagInline(admin.TabularInline): #StackedInline
     model = Sub_tag
