@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Account(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, unique=True, related_name='account')
     phone_number = models.CharField(max_length=20)
@@ -11,12 +10,15 @@ class Account(models.Model):
     contribution_rate = models.IntegerField()
     email = models.CharField(max_length=200)
     role = models.CharField(max_length=1)
+    last_added_question = models.ForeignKey('Question', on_delete=models.CASCADE, null=True, blank=True)
 
     # image_url ... not complete
 
     def __str__(self):
         return self.user.username
 
+    def numberOfAdds(self):
+        return len(self.question_set.all())
 
 class Source(models.Model):
     name = models.CharField(max_length=200)
@@ -67,7 +69,6 @@ class Question(models.Model):
     def __str__(self):
         return self.name
 
-
 class Attempt(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -80,3 +81,5 @@ class Themed_q(models.Model):
     theme = models.CharField(max_length=200)
     text = models.CharField(max_length=3000)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+    
