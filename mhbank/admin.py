@@ -1,15 +1,17 @@
 from django.contrib import admin
+from django.utils import timezone
 
 from .models import Question, Account, Tag, Sub_tag
 
-
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    readonly_fields = ['question_maker']
+    readonly_fields = ['question_maker', 'last_change_date']
 
     def save_model(self, request, obj, form, change):
         if not change:
             obj.question_maker = request.user.account
+
+        obj.last_change_date = timezone.localtime()
         obj.save()
 
 
