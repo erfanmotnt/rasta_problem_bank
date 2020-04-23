@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Question, Account
+from .models import Question, Account, Tag, Sub_tag
 
 
 @admin.register(Question)
@@ -11,6 +11,7 @@ class QuestionAdmin(admin.ModelAdmin):
         if not change:
             obj.question_maker = request.user.account
         obj.save()
+
 
     def has_add_permission(self, request):
         return True
@@ -31,3 +32,13 @@ class QuestionAdmin(admin.ModelAdmin):
 
 # admin.site.register(Question)
 admin.site.register(Account)
+
+class SubTagInline(admin.TabularInline): #StackedInline
+    model = Sub_tag
+    extra = 1
+
+class TagAdmin(admin.ModelAdmin):
+    inlines = [SubTagInline]
+
+
+admin.site.register(Tag, TagAdmin)

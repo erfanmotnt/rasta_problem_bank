@@ -22,10 +22,24 @@ class Source(models.Model):
     name = models.CharField(max_length=200)
     # questions
 
+    def __str__(self):
+        return self.name
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=200)
     # sub_tags
+    def __str__(self):
+        return self.name
+
+class Sub_tag(models.Model):
+    name = models.CharField(max_length=200)
+    parent = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
 
 
 class Event(models.Model):
@@ -40,6 +54,7 @@ class Question(models.Model):
     appropriate_grades_min = models.IntegerField(default=1)
     appropriate_grades_max = models.IntegerField(default=12)
     tags = models.ManyToManyField(Tag, blank=True)
+    sub_tags = models.ManyToManyField(Sub_tag, blank=True)
     events = models.ManyToManyField(Event, blank=True)
     source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -52,10 +67,6 @@ class Question(models.Model):
     def __str__(self):
         return self.name
 
-class Sub_tag(models.Model):
-    name = models.CharField(max_length=200)
-    parent = models.ForeignKey(Tag, on_delete=models.CASCADE)
-
 
 class Attempt(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -66,6 +77,6 @@ class Attempt(models.Model):
 
 
 class Themed_q(models.Model):
-    name = models.CharField(max_length=200)
+    theme = models.CharField(max_length=200)
     text = models.CharField(max_length=3000)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
