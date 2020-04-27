@@ -40,6 +40,8 @@ class QuestionAdmin(admin.ModelAdmin):
         obj.save()
     
     def add_view(self, request, form_url='', extra_context=None):
+        if request.user.is_anonymous:
+            return False        
         if request.user.account.role is 'a':
             self.fields = self.fields_types['a']
     
@@ -48,6 +50,8 @@ class QuestionAdmin(admin.ModelAdmin):
         )
    
     def change_view(self, request, object_id, form_url='', extra_context=None):
+        if request.user.is_anonymous:
+            return False
         if request.user.account.role is 'a':
             self.readonly_fields = self.readonly_fields_types['a']
             self.fields = self.fields_types['s']
@@ -55,7 +59,7 @@ class QuestionAdmin(admin.ModelAdmin):
         return super().change_view(
             request, object_id, form_url, extra_context=extra_context,
         )
-   
+    
 
     #def get_form(self, request, obj=None, **kwargs):
         #form = super(QuestionAdmin, self).get_form(request, obj, **kwargs)
@@ -80,10 +84,14 @@ class QuestionAdmin(admin.ModelAdmin):
         return True
 
     def has_delete_permission(self, request, obj=None):
+        if request.user.is_anonymous:
+            return False
         return True if request.user.is_superuser or obj is None else request.user.account.question_set.filter(
             id=obj.id).exists()
 
     def has_change_permission(self, request, obj=None):
+        if request.user.is_anonymous:
+            return False
         return True if request.user.is_superuser or request.user.account.role is 'm' or  obj is None else request.user.account.question_set.filter(
             id=obj.id).exists()
 
@@ -95,13 +103,15 @@ class AccountAdmin(admin.ModelAdmin):
     fields = ['user', 'role', 'phone_number', 'email', 'scientific_rate', 'contribution_rate']
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
+        if request.user.is_anonymous:
+            return False
         if request.user.account.role is 'a':
             self.fields = ['user', 'role', 'scientific_rate', 'contribution_rate']
 
         return super().change_view(
             request, object_id, form_url, extra_context=extra_context,
         )
-
+    
     def has_view_permission(self, request, obj=None):
         return True
     
