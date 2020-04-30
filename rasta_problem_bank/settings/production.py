@@ -1,4 +1,4 @@
-from ra.settings.base import *
+from rasta_problem_bank.settings.base import *
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -57,7 +57,7 @@ LOGGING = {
             'level': LOG_LEVEL,
             'propagate': True,
         },
-        'ra': {
+        'rasta_problem_bank': {
             'handlers': ['file'],
             'level': LOG_LEVEL,
             'propagate': True,

@@ -39,7 +39,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-        'ra': {
+        'rasta_problem_bank': {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': True,
