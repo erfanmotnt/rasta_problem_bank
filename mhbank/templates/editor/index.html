@@ -1,0 +1,47 @@
+{% load static %}
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<script type="text/javascript" src={% static 'editor/libs.js' %}></script>
+<script type="text/javascript" src={% static 'editor/syntax.js' %}></script>
+<script type="text/javascript" src={% static 'editor/buttons.js' %}></script>
+<script type="text/javascript" src={% static 'editor/editor.js' %}></script>
+
+<link type="text/css" rel="stylesheet" href={% static 'editor/editor.css' %}>
+
+<style type="text/css">
+    body {
+        background: #F5F5F5;
+    }
+
+    #moratab {
+        align-content: center;
+        margin-top: 20px;
+    }
+
+    #wmd-input, .modal .btn, .modal p {
+        font-family: IRMitra Arial;
+    }
+
+    .deletelink {
+        box-sizing: content-box;
+    }
+</style>
+
+<div class="container">
+    <div id="moratab_{{ widget.name }}">
+    </div>
+</div>
+<input type="hidden" name="{{ widget.name }}" id="hidden_markdown_{{ widget.name }}"/>
+
+<script type="text/javascript">
+    {#content = $('<textarea/>').html($('#moratab').html()).val();#}
+    {% if widget.value != None %} content_{{ widget.name }} = "{{ widget.value|stringformat:'s' }}"{% endif %}
+    $("#hidden_markdown").val(content_{{ widget.name }});
+    var editor_{{ widget.name }} = $('#moratab_{{ widget.name }}').moratab(content_{{ widget.name }},
+        {strings: {help: ''}},
+        (textContent) => {
+        $("#hidden_markdown_{{ widget.name }}").val(textContent);
+    });
+</script>
