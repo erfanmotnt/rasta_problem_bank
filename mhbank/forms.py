@@ -1,9 +1,5 @@
 from django import forms
-from django.utils.safestring import mark_safe
-
-
-class MoratabEditor(forms.TextInput):
-    template_name = 'editor/index.html'
+from .widgets import MoratabEditor
 
 
 class QuestionForm(forms.ModelForm):

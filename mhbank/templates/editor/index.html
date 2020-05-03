@@ -37,8 +37,9 @@
 
 <script type="text/javascript">
     {#content = $('<textarea/>').html($('#moratab').html()).val();#}
+    content_{{ widget.name }} = "";
     {% if widget.value != None %} content_{{ widget.name }} = "{{ widget.value|stringformat:'s' }}"{% endif %}
-    $("#hidden_markdown").val(content_{{ widget.name }});
+    $("#hidden_markdown_{{ widget.name }}").val(content_{{ widget.name }});
     var editor_{{ widget.name }} = $('#moratab_{{ widget.name }}').moratab(content_{{ widget.name }},
         {strings: {help: ''}},
         (textContent) => {
