@@ -40,15 +40,17 @@
 
 <script type="text/javascript">
     var content_{{ widget.name }} = "";
+    var editor;
     {% if widget.value != None %} content_{{ widget.name }} = "{{ widget.value|stringformat:'s' }}"{% endif %}
     $("#hidden_markdown_{{ widget.name }}").val(content_{{ widget.name }});
     $("#hidden_markdown_{{ widget.name }}").focus(()=>{
         $(".hidden_markdown_class").attr("type","text");
         $("#container_only").remove();
         $("#hidden_markdown_{{ widget.name }}").after($("#temp_{{ widget.name }}").html());
-        var editor_{{ widget.name }} = $('#moratab_{{ widget.name }}').moratab(content_{{ widget.name }},
+        editor = $('#moratab_{{ widget.name }}').moratab(content_{{ widget.name }},
             {strings: {help: ''}},
             (textContent) => {
+            content_{{ widget.name }} = textContent;
                 $("#hidden_markdown_{{ widget.name }}").val(textContent);
             });
         $("#hidden_markdown_{{ widget.name }}").attr("type","hidden");
