@@ -29,20 +29,28 @@
     }
 </style>
 
-<div class="container">
+<template id="temp_{{ widget.name }}">
+<div class="container" id="container_only">
     <div id="moratab_{{ widget.name }}">
     </div>
 </div>
-<input type="hidden" name="{{ widget.name }}" id="hidden_markdown_{{ widget.name }}"/>
+</template>
+<input type="text" name="{{ widget.name }}" id="hidden_markdown_{{ widget.name }}"
+       class="hidden_markdown_class"/>
 
 <script type="text/javascript">
-    {#content = $('<textarea/>').html($('#moratab').html()).val();#}
-    content_{{ widget.name }} = "";
+    var content_{{ widget.name }} = "";
     {% if widget.value != None %} content_{{ widget.name }} = "{{ widget.value|stringformat:'s' }}"{% endif %}
     $("#hidden_markdown_{{ widget.name }}").val(content_{{ widget.name }});
-    var editor_{{ widget.name }} = $('#moratab_{{ widget.name }}').moratab(content_{{ widget.name }},
-        {strings: {help: ''}},
-        (textContent) => {
-        $("#hidden_markdown_{{ widget.name }}").val(textContent);
+    $("#hidden_markdown_{{ widget.name }}").focus(()=>{
+        $(".hidden_markdown_class").attr("type","text");
+        $("#container_only").remove();
+        $("#hidden_markdown_{{ widget.name }}").after($("#temp_{{ widget.name }}").html());
+        var editor_{{ widget.name }} = $('#moratab_{{ widget.name }}').moratab(content_{{ widget.name }},
+            {strings: {help: ''}},
+            (textContent) => {
+                $("#hidden_markdown_{{ widget.name }}").val(textContent);
+            });
+        $("#hidden_markdown_{{ widget.name }}").attr("type","hidden");
     });
 </script>
