@@ -62,6 +62,7 @@ class Question(models.Model):
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
     text = models.CharField(max_length=3000)
     answer = models.CharField(max_length=3000)
+    #guidance = models.CharField(max_length=1000)
     last_change_date = models.DateTimeField('date published')
     # themed_qs
     # emoj
