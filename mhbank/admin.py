@@ -65,9 +65,10 @@ class QuestionAdmin(admin.ModelAdmin):
         form = super(QuestionAdmin, self).get_form(request, obj, **kwargs)
         if request.user.is_anonymous:
             return form
-        
-        if(obj is None and request.user.account.question_set.exists() > 0):
+        if obj is None:
             form.base_fields['answer'].initial = "please write answer"
+            
+        if(obj is None and request.user.account.question_set.exists() > 0):
             form.base_fields['level'].initial = request.user.account.question_set.latest('last_change_date').level
             form.base_fields['source'].initial = request.user.account.question_set.latest('last_change_date').source
             form.base_fields['events'].initial = request.user.account.question_set.latest('last_change_date').events.all()
