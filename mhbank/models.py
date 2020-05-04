@@ -49,6 +49,9 @@ class Event(models.Model):
     name = models.CharField(max_length=200)
     # questions
 
+    def __str__(self):
+        return self.name
+
 
 class Question(models.Model):
     name = models.CharField(max_length=200)
@@ -62,7 +65,7 @@ class Question(models.Model):
     source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
     text = models.CharField(max_length=3000)
-    answer = models.CharField(max_length=3000)
+    answer = models.CharField(max_length=3000, null=True)
     #guidance = models.CharField(max_length=1000)
     last_change_date = models.DateTimeField('date published')
     # themed_qs

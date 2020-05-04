@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 import datetime
-from .models import Question, Account, Tag, Sub_tag
+from .models import Question, Account, Tag, Sub_tag, Event, Source
 from .forms import QuestionForm, AccountForm
 
 
@@ -67,6 +67,7 @@ class QuestionAdmin(admin.ModelAdmin):
             return form
         
         if(obj is None and request.user.account.question_set.exists() > 0):
+            form.base_fields['answer'].initial = "please write answer"
             form.base_fields['level'].initial = request.user.account.question_set.latest('last_change_date').level
             form.base_fields['source'].initial = request.user.account.question_set.latest('last_change_date').source
             form.base_fields['events'].initial = request.user.account.question_set.latest('last_change_date').events.all()
@@ -160,3 +161,5 @@ admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Sub_tag, Sub_tagAdmin)
+admin.site.register(Source)
+admin.site.register(Event)
