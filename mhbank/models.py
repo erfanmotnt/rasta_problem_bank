@@ -10,7 +10,6 @@ class Account(models.Model):
     contribution_rate = models.IntegerField()
     email = models.CharField(max_length=200)
     role = models.CharField(max_length=1)
-    last_added_question = models.ForeignKey('Question', on_delete=models.CASCADE, null=True, blank=True)
 
     # image_url ... not complete
 

@@ -32,8 +32,6 @@ class QuestionAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.question_maker = request.user.account
-            # request.user.account.last_added_question
-            # request.user.account.save()
 
         if obj.question_maker.role == 'a':
             obj.verification_status = 'w'
@@ -62,18 +60,21 @@ class QuestionAdmin(admin.ModelAdmin):
             request, object_id, form_url, extra_context=extra_context,
         )
 
-    # def get_form(self, request, obj=None, **kwargs):
-    # form = super(QuestionAdmin, self).get_form(request, obj, **kwargs)
-    # if(obj is None and request.user.account.last_added_question is not None):
-    # form.base_fields['level'].initial = request.user.account.last_added_question.level
-    # form.base_fields['source'].initial = request.user.account.last_added_question.source
-    # form.base_fields['events'].initial = request.user.account.last_added_question.events
-    # form.base_fields['appropriate_grades_min'].initial = request.user.account.last_added_question.appropriate_grades_min
-    # form.base_fields['appropriate_grades_max'].initial = request.user.account.last_added_question.appropriate_grades_max
-    # form.base_fields['tags'].initial = request.user.account.last_added_question.tags
-    # form.base_fields['sub_tags'].initial = request.user.account.last_added_question.sub_tags
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(QuestionAdmin, self).get_form(request, obj, **kwargs)
+        if request.user.is_anonymous:
+            return form
+        
+        if(obj is None and request.user.account.question_set.exists() > 0):
+            form.base_fields['level'].initial = request.user.account.question_set.latest('last_change_date').level
+            form.base_fields['source'].initial = request.user.account.question_set.latest('last_change_date').source
+            form.base_fields['events'].initial = request.user.account.question_set.latest('last_change_date').events.all()
+            form.base_fields['appropriate_grades_min'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_min
+            form.base_fields['appropriate_grades_max'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_max
+            form.base_fields['tags'].initial = request.user.account.question_set.latest('last_change_date').tags.all()
+            form.base_fields['sub_tags'].initial = request.user.account.question_set.latest('last_change_date').sub_tags.all()
 
-    #    return form
+        return form
 
     def has_add_permission(self, request):
         return True
@@ -98,7 +99,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('user', 'numberOfAdds', 'last_added_question')
+    list_display = ('user', 'numberOfAdds')
     form = AccountForm
     fields = ['user', 'role', 'phone_number', 'email', 'scientific_rate', 'contribution_rate']
 
