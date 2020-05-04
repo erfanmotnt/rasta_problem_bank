@@ -1,6 +1,6 @@
 from django import forms
 from .widgets import MoratabEditor
-
+from .models import Account
 
 class QuestionForm(forms.ModelForm):
     VERIFICATIONS = (
@@ -16,9 +16,14 @@ class QuestionForm(forms.ModelForm):
 
 class AccountForm(forms.ModelForm):
     ROLES = (
-        ('s', 'SupperUser'),
+        ('a', 'Adder'),
         ('m', 'Mentor'),
-        ('a', 'Adder')
+        ('s', 'SupperUser'),
+        
     )
 
     role = forms.ChoiceField(choices=ROLES)
+    
+    class Meta:
+        model = Account
+        fields = ['user', 'role', 'first_name', 'last_name', 'phone_number', 'email', 'scientific_rate', 'contribution_rate']

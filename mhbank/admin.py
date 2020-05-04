@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.utils import timezone
-
-
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+import datetime
 from .models import Question, Account, Tag, Sub_tag
 from .forms import QuestionForm, AccountForm
 
@@ -10,10 +11,10 @@ from .forms import QuestionForm, AccountForm
 class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
         'a': ['name', 'level', 'text', 'answer', 'source',
-              'appropriate_grades_min', 'appropriate_grades_max', 'tags', 'sub_tags', 'question_maker',
+              ('appropriate_grades_min', 'appropriate_grades_max'), ('tags', 'sub_tags'), 'question_maker',
               'last_change_date'],
         's': ['name', 'level', 'verification_status', 'text', 'answer', 'source', 'events',
-              'appropriate_grades_min', 'appropriate_grades_max', 'tags', 'sub_tags', 'question_maker',
+              ('appropriate_grades_min', 'appropriate_grades_max'), ('tags', 'sub_tags'), 'question_maker',
               'last_change_date']
     }
     readonly_fields_types = {
@@ -97,21 +98,21 @@ class QuestionAdmin(admin.ModelAdmin):
         return True if request.user.is_superuser or request.user.account.role == 'm' or obj is None else request.user.account.question_set.filter(
             id=obj.id).exists()
 
-
 class AccountAdmin(admin.ModelAdmin):
     list_display = ('user', 'numberOfAdds')
     form = AccountForm
-    fields = ['user', 'role', 'phone_number', 'email', 'scientific_rate', 'contribution_rate']
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         if request.user.is_anonymous:
             return False
         if request.user.account.role == 'a':
-            self.fields = ['user', 'role', 'scientific_rate', 'contribution_rate']
+            self.fields = ['user','first_name', 'last_name', 'role', 'scientific_rate', 'contribution_rate']
 
         return super().change_view(
             request, object_id, form_url, extra_context=extra_context,
         )
+
+    
 
     def has_view_permission(self, request, obj=None):
         return True
@@ -137,6 +138,25 @@ class Sub_tagAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return True
 
+class accoutInline(admin.StackedInline):
+    model = Account
+    form = AccountForm
 
+class UserAdmin(BaseUserAdmin):
+    inlines=(accoutInline,)
+    
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_add_permission(self, request):
+        return True 
+    
+    def has_change_permission(self, request, obj=None):
+        if obj is None:
+            return True
+        return request.user.is_superuser  
+    
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Sub_tag, Sub_tagAdmin)
