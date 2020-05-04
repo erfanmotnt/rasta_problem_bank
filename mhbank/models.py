@@ -3,14 +3,15 @@ from django.contrib.auth.models import User
 
 class Account(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, unique=True, related_name='account')
+    first_name = models.CharField(max_length=30, default ='None')
+    last_name = models.CharField(max_length=30, default = 'None')
     phone_number = models.CharField(max_length=20)
+    email = models.CharField(max_length=200)
     # added_questions
     # attempts
-    scientific_rate = models.IntegerField()
-    contribution_rate = models.IntegerField()
-    email = models.CharField(max_length=200)
+    scientific_rate = models.IntegerField(default=0)
+    contribution_rate = models.IntegerField(default=0)
     role = models.CharField(max_length=1)
-    last_added_question = models.ForeignKey('Question', on_delete=models.CASCADE, null=True, blank=True)
 
     # image_url ... not complete
 
