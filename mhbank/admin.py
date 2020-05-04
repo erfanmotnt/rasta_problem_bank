@@ -10,11 +10,11 @@ from .forms import QuestionForm, AccountForm
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
-        'a': ['name', 'level', 'text', 'answer', 'source',
-              ('appropriate_grades_min', 'appropriate_grades_max'), ('tags', 'sub_tags'), 'question_maker',
+        'a': ['name', ('level', 'appropriate_grades_min', 'appropriate_grades_max'), 'text',
+         'answer', 'source', ('tags', 'sub_tags'), 'question_maker',
               'last_change_date'],
-        's': ['name', 'level', 'verification_status', 'text', 'answer', 'source', 'events',
-              ('appropriate_grades_min', 'appropriate_grades_max'), ('tags', 'sub_tags'), 'question_maker',
+        's': ['name', ('level', 'appropriate_grades_min', 'appropriate_grades_max'), 'verification_status', 'text',
+         'answer', 'source', 'events', ('tags', 'sub_tags'), 'question_maker',
               'last_change_date']
     }
     readonly_fields_types = {
