@@ -10,8 +10,8 @@ from .forms import QuestionForm, AccountForm
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
-        'a': ['name', ('level', 'appropriate_grades_min', 'appropriate_grades_max'), 'text',
-         'answer', 'source', ('tags', 'sub_tags'), 'question_maker',
+        'a': ['name', ('level', 'appropriate_grades_min', 'appropriate_grades_max'), 'verification_status', 'text',
+         'answer', 'source', ('tags', 'sub_tags'), 'question_maker', 
               'last_change_date'],
         's': ['name', ('level', 'appropriate_grades_min', 'appropriate_grades_max'), 'verification_status', 'text',
          'answer', 'source', 'events', ('tags', 'sub_tags'), 'question_maker',
@@ -71,7 +71,8 @@ class QuestionAdmin(admin.ModelAdmin):
         if(obj is None and request.user.account.question_set.exists() > 0):
             form.base_fields['level'].initial = request.user.account.question_set.latest('last_change_date').level
             form.base_fields['source'].initial = request.user.account.question_set.latest('last_change_date').source
-            form.base_fields['events'].initial = request.user.account.question_set.latest('last_change_date').events.all()
+            if request.user.account.role is not 'a':
+                form.base_fields['events'].initial = request.user.account.question_set.latest('last_change_date').events.all()
             form.base_fields['appropriate_grades_min'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_min
             form.base_fields['appropriate_grades_max'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_max
             form.base_fields['tags'].initial = request.user.account.question_set.latest('last_change_date').tags.all()
