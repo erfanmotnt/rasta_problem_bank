@@ -45,7 +45,8 @@ class QuestionAdmin(admin.ModelAdmin):
             return False
         if request.user.account.role == 'a':
             self.fields = self.fields_types['a']
-
+        else:
+            self.fields = self.fields_types['s']
         return super().add_view(
             request, form_url, extra_context=extra_context,
         )
@@ -56,7 +57,10 @@ class QuestionAdmin(admin.ModelAdmin):
         if request.user.account.role == 'a':
             self.readonly_fields = self.readonly_fields_types['a']
             self.fields = self.fields_types['s']
-
+        else:
+            self.readonly_fields = self.readonly_fields_types['s']
+            self.fields = self.fields_types['s']
+        
         return super().change_view(
             request, object_id, form_url, extra_context=extra_context,
         )
@@ -110,7 +114,8 @@ class AccountAdmin(admin.ModelAdmin):
             return False
         if request.user.account.role == 'a':
             self.fields = ['user','first_name', 'last_name', 'role', 'scientific_rate', 'contribution_rate']
-
+        else:
+            self.fields = ['user', 'role', 'first_name', 'last_name', 'phone_number', 'email', 'scientific_rate', 'contribution_rate']
         return super().change_view(
             request, object_id, form_url, extra_context=extra_context,
         )
