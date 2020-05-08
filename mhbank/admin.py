@@ -31,6 +31,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
     # all defualt saved for each users
     def save_model(self, request, obj, form, change):
+        print(obj.text.encode())
         if not change:
             obj.question_maker = request.user.account
 
@@ -75,7 +76,7 @@ class QuestionAdmin(admin.ModelAdmin):
         if(obj is None and request.user.account.question_set.exists() > 0):
             form.base_fields['level'].initial = request.user.account.question_set.latest('last_change_date').level
             form.base_fields['source'].initial = request.user.account.question_set.latest('last_change_date').source
-            if request.user.account.role is not 'a':
+            if request.user.account.role != 'a':
                 form.base_fields['events'].initial = request.user.account.question_set.latest('last_change_date').events.all()
             form.base_fields['appropriate_grades_min'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_min
             form.base_fields['appropriate_grades_max'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_max
