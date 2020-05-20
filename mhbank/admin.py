@@ -15,14 +15,14 @@ class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
         'a': ['name', 'verification_status', 'text',
          'answer', 'source', ('tags', 'sub_tags'), 'question_maker', 
-              'publish_date'],
+              'last_change_date'],
         's': ['name', 'verification_status', 'text',
          'answer', 'source', 'events', ('tags', 'sub_tags'), 'question_maker',
-               'publish_date']
+               'last_change_date']
     }
     readonly_fields_types = {
-        'a': ['question_maker', 'publish_date', 'events', 'verification_status'],
-        's': ['question_maker', 'publish_date']
+        'a': ['question_maker', 'last_change_date', 'events', 'verification_status'],
+        's': ['question_maker', 'last_change_date']
     }
 
     fields = fields_types['s']
@@ -77,7 +77,7 @@ class QuestionAdmin(admin.ModelAdmin):
             return form
         if obj is None:
             form.base_fields['answer'].initial = "please write answer"
-            
+        '''    
         if(obj is None and request.user.account.question_set.exists() > 0):
             #form.base_fields['level'].initial = request.user.account.question_set.latest('publish_date').level
             form.base_fields['source'].initial = request.user.account.question_set.latest('publish_date').source
@@ -87,7 +87,7 @@ class QuestionAdmin(admin.ModelAdmin):
             #form.base_fields['appropriate_grades_max'].initial = request.user.account.question_set.latest('publish_date').appropriate_grades_max
             form.base_fields['tags'].initial = request.user.account.question_set.latest('publish_date').tags.all()
             form.base_fields['sub_tags'].initial = request.user.account.question_set.latest('publish_date').sub_tags.all()
-
+        '''
         return form
 
     def has_add_permission(self, request):
