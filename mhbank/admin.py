@@ -15,20 +15,20 @@ class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
         'a': ['name', 'verification_status', 'text',
          'answer', 'source', ('tags', 'sub_tags'), 'question_maker', 
-              'last_change_date'],
+              'publish_date'],
         's': ['name', 'verification_status', 'text',
          'answer', 'source', 'events', ('tags', 'sub_tags'), 'question_maker',
-              'last_change_date']
+              'publish_date']
     }
     readonly_fields_types = {
-        'a': ['question_maker', 'last_change_date', 'events', 'verification_status'],
-        's': ['question_maker', 'last_change_date']
+        'a': ['question_maker', 'publish_date', 'events', 'verification_status'],
+        's': ['question_maker', 'publish_date']
     }
 
     fields = fields_types['s']
     readonly_fields = readonly_fields_types['s']
 
-    list_display = ('name', 'verification_status', 'last_change_date', 'question_maker')
+    list_display = ('name', 'verification_status', 'publish_date', 'question_maker')
     list_filter = ['verification_status', 'question_maker']
     form = QuestionForm
     inlines = (HardnessInline,)
@@ -42,7 +42,7 @@ class QuestionAdmin(admin.ModelAdmin):
         if obj.question_maker.role == 'a':
             obj.verification_status = 'w'
 
-        obj.last_change_date = timezone.localtime()
+        obj.publish_date = timezone.localtime()
         obj.save()
 
     def add_view(self, request, form_url='', extra_context=None):
@@ -78,14 +78,14 @@ class QuestionAdmin(admin.ModelAdmin):
             form.base_fields['answer'].initial = "please write answer"
             
         if(obj is None and request.user.account.question_set.exists() > 0):
-            #form.base_fields['level'].initial = request.user.account.question_set.latest('last_change_date').level
-            form.base_fields['source'].initial = request.user.account.question_set.latest('last_change_date').source
+            #form.base_fields['level'].initial = request.user.account.question_set.latest('publish_date').level
+            form.base_fields['source'].initial = request.user.account.question_set.latest('publish_date').source
             if request.user.account.role != 'a':
-                form.base_fields['events'].initial = request.user.account.question_set.latest('last_change_date').events.all()
-            #form.base_fields['appropriate_grades_min'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_min
-            #form.base_fields['appropriate_grades_max'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_max
-            form.base_fields['tags'].initial = request.user.account.question_set.latest('last_change_date').tags.all()
-            form.base_fields['sub_tags'].initial = request.user.account.question_set.latest('last_change_date').sub_tags.all()
+                form.base_fields['events'].initial = request.user.account.question_set.latest('publish_date').events.all()
+            #form.base_fields['appropriate_grades_min'].initial = request.user.account.question_set.latest('publish_date').appropriate_grades_min
+            #form.base_fields['appropriate_grades_max'].initial = request.user.account.question_set.latest('publish_date').appropriate_grades_max
+            form.base_fields['tags'].initial = request.user.account.question_set.latest('publish_date').tags.all()
+            form.base_fields['sub_tags'].initial = request.user.account.question_set.latest('publish_date').sub_tags.all()
 
         return form
 

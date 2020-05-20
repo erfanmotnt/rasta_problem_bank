@@ -56,16 +56,7 @@ class Event(models.Model):
 
 class Question(models.Model):
     name = models.CharField(max_length=200)
-    level = models.IntegerField(null=True)
     verification_status = models.CharField(max_length=50)
-    appropriate_grades_min = models.IntegerField(
-        default=1,
-        validators=[MaxValueValidator(12), MinValueValidator(1)]
-    )
-    appropriate_grades_max = models.IntegerField(
-        default=12,
-        validators=[MaxValueValidator(12), MinValueValidator(1)]
-    ) 
     tags = models.ManyToManyField(Tag, blank=True)
     sub_tags = models.ManyToManyField(Sub_tag, blank=True)
     events = models.ManyToManyField(Event, blank=True)
@@ -74,7 +65,7 @@ class Question(models.Model):
     text = models.CharField(max_length=3000)
     answer = models.CharField(max_length=3000, null=True, blank=True)
     #guidance = models.CharField(max_length=1000)
-    last_change_date = models.DateTimeField('date published')
+    publish_date = models.DateTimeField('date published')
     # themed_qs
     # emoj
 
