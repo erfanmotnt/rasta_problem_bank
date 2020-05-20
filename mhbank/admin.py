@@ -15,20 +15,20 @@ class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
         'a': ['name', 'verification_status', 'text',
          'answer', 'source', ('tags', 'sub_tags'), 'question_maker', 
-              'publish_date'],
+              ('change_date', 'publish_date')],
         's': ['name', 'verification_status', 'text',
          'answer', 'source', 'events', ('tags', 'sub_tags'), 'question_maker',
-              'publish_date']
+              ('change_date', 'publish_date')]
     }
     readonly_fields_types = {
-        'a': ['question_maker', 'publish_date', 'events', 'verification_status'],
-        's': ['question_maker', 'publish_date']
+        'a': ['question_maker', 'change_date', 'publish_date', 'events', 'verification_status'],
+        's': ['question_maker', 'change_date', 'publish_date']
     }
 
     fields = fields_types['s']
     readonly_fields = readonly_fields_types['s']
 
-    list_display = ('name', 'verification_status', 'publish_date', 'question_maker')
+    list_display = ('name', 'verification_status', 'change_date', 'question_maker')
     list_filter = ['verification_status', 'question_maker']
     form = QuestionForm
     inlines = (HardnessInline,)
