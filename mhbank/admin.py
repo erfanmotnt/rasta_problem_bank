@@ -21,8 +21,8 @@ class QuestionAdmin(admin.ModelAdmin):
                'last_change_date']
     }
     readonly_fields_types = {
-        'a': ['question_maker', 'last_change_date', 'events', 'verification_status'],
-        's': ['question_maker', 'last_change_date']
+        'a': ['question_maker', 'events', 'verification_status'],
+        's': ['question_maker']
     }
 
     fields = fields_types['s']
@@ -38,7 +38,7 @@ class QuestionAdmin(admin.ModelAdmin):
         print(obj.text.encode())
         if not change:
             obj.question_maker = request.user.account
-            obj.publish_date = timezone.localtime()
+            obj.last_change_date = timezone.localtime()
         
         if obj.question_maker.role == 'a':
             obj.verification_status = 'w'
