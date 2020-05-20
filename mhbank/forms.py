@@ -11,7 +11,7 @@ class QuestionForm(forms.ModelForm):
 
     verification_status = forms.ChoiceField(choices=VERIFICATIONS)
     text = forms.CharField(widget=MoratabEditor)
-    answer = forms.CharField(widget=MoratabEditor)
+    answer = forms.CharField(widget=MoratabEditor, required=False)
 
 
 class AccountForm(forms.ModelForm):
