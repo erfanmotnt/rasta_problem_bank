@@ -67,7 +67,7 @@ class Question(models.Model):
     answer = models.CharField(max_length=3000, null=True, blank=True)
     #guidance = models.CharField(max_length=1000)
     publish_date = models.DateTimeField('date published')
-    #change_date = models.DateTimeField('date changed', default=timezone.localtime())
+    change_date = models.DateTimeField('date changed', null=True)
     # themed_qs
     # emoj
 
