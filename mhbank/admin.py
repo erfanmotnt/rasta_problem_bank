@@ -38,11 +38,12 @@ class QuestionAdmin(admin.ModelAdmin):
         print(obj.text.encode())
         if not change:
             obj.question_maker = request.user.account
-
+            obj.publish_date = timezone.localtime()
+        
         if obj.question_maker.role == 'a':
             obj.verification_status = 'w'
 
-        obj.publish_date = timezone.localtime()
+        obj.change_date = timezone.localtime()
         obj.save()
 
     def add_view(self, request, form_url='', extra_context=None):

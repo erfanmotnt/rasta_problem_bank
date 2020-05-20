@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -66,7 +67,7 @@ class Question(models.Model):
     answer = models.CharField(max_length=3000, null=True, blank=True)
     #guidance = models.CharField(max_length=1000)
     publish_date = models.DateTimeField('date published')
-    change_date = models.DateTimeField('date changed')
+    change_date = models.DateTimeField('date changed', default=timezone.localtime())
     # themed_qs
     # emoj
 
