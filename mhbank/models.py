@@ -52,22 +52,11 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
-
-class Hardness(models.Model):
-    level = models.IntegerField()
-    appropriate_grades_min = models.IntegerField(
-        default=1,
-        validators=[MaxValueValidator(12), MinValueValidator(1)]
-    )
-    appropriate_grades_max = models.IntegerField(
-        default=12,
-        validators=[MaxValueValidator(12), MinValueValidator(1)]
-    )
         
 
 class Question(models.Model):
     name = models.CharField(max_length=200)
-    level = models.IntegerField()
+    level = models.IntegerField(null=True)
     verification_status = models.CharField(max_length=50)
     appropriate_grades_min = models.IntegerField(
         default=1,
@@ -76,8 +65,7 @@ class Question(models.Model):
     appropriate_grades_max = models.IntegerField(
         default=12,
         validators=[MaxValueValidator(12), MinValueValidator(1)]
-    )
-    hardness = models.ForeignKey(Hardness, on_delete=models.CASCADE, null=True)
+    ) 
     tags = models.ManyToManyField(Tag, blank=True)
     sub_tags = models.ManyToManyField(Sub_tag, blank=True)
     events = models.ManyToManyField(Event, blank=True)
@@ -93,6 +81,21 @@ class Question(models.Model):
     def __str__(self):
         return self.name
 
+class Hardness(models.Model):
+    level = models.IntegerField()
+    appropriate_grades_min = models.IntegerField(
+        default=1,
+        validators=[MaxValueValidator(12), MinValueValidator(1)]
+    )
+    appropriate_grades_max = models.IntegerField(
+        default=12,
+        validators=[MaxValueValidator(12), MinValueValidator(1)]
+    )
+    question = models.OneToOneField(Question, null=True, on_delete=models.CASCADE, related_name='hardness')
+
+    def __str__(self):
+        return str(self.level)
+
 class Attempt(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -106,3 +109,11 @@ class Themed_q(models.Model):
     text = models.CharField(max_length=3000)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
+
+'''
+from mhbank.models import Question, Hardness
+for q in Question.objects.all():
+    h = Hardness(level=q.level, appropriate_grades_min=q.appropriate_grades_min, appropriate_grades_max=q.appropriate_grades_max)
+    q.hardness=h
+    h.save()
+'''

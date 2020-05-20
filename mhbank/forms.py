@@ -1,6 +1,6 @@
 from django import forms
 from .widgets import MoratabEditor
-from .models import Account
+from .models import Account, Hardness
 
 class QuestionForm(forms.ModelForm):
     VERIFICATIONS = (
@@ -12,7 +12,6 @@ class QuestionForm(forms.ModelForm):
     verification_status = forms.ChoiceField(choices=VERIFICATIONS)
     text = forms.CharField(widget=MoratabEditor)
     answer = forms.CharField(widget=MoratabEditor, required=False)
-
 
 class AccountForm(forms.ModelForm):
     ROLES = (
@@ -27,3 +26,10 @@ class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
         fields = ['user', 'role', 'first_name', 'last_name', 'phone_number', 'email', 'scientific_rate', 'contribution_rate']
+
+
+class HardnessForm(forms.ModelForm):
+    
+    class Meta:
+        model = Hardness
+        fields = ['level', 'appropriate_grades_min', 'appropriate_grades_max']
