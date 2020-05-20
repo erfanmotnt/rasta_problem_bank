@@ -3,17 +3,20 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 import datetime
-from .models import Question, Account, Tag, Sub_tag, Event, Source
-from .forms import QuestionForm, AccountForm
+from .models import Question, Account, Tag, Sub_tag, Event, Source, Hardness
+from .forms import QuestionForm, AccountForm, HardnessForm
 
+class HardnessInline(admin.StackedInline):
+    model = Hardness
+    form = HardnessForm
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
-        'a': ['name', ('level', 'appropriate_grades_min', 'appropriate_grades_max'), 'verification_status', 'text',
+        'a': ['name', 'verification_status', 'text',
          'answer', 'source', ('tags', 'sub_tags'), 'question_maker', 
               'last_change_date'],
-        's': ['name', ('level', 'appropriate_grades_min', 'appropriate_grades_max'), 'verification_status', 'text',
+        's': ['name', 'verification_status', 'text',
          'answer', 'source', 'events', ('tags', 'sub_tags'), 'question_maker',
               'last_change_date']
     }
@@ -28,6 +31,7 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ('name', 'verification_status', 'last_change_date', 'question_maker')
     list_filter = ['verification_status', 'question_maker']
     form = QuestionForm
+    inlines = (HardnessInline,)
 
     # all defualt saved for each users
     def save_model(self, request, obj, form, change):
@@ -74,12 +78,12 @@ class QuestionAdmin(admin.ModelAdmin):
             form.base_fields['answer'].initial = "please write answer"
             
         if(obj is None and request.user.account.question_set.exists() > 0):
-            form.base_fields['level'].initial = request.user.account.question_set.latest('last_change_date').level
+            #form.base_fields['level'].initial = request.user.account.question_set.latest('last_change_date').level
             form.base_fields['source'].initial = request.user.account.question_set.latest('last_change_date').source
             if request.user.account.role != 'a':
                 form.base_fields['events'].initial = request.user.account.question_set.latest('last_change_date').events.all()
-            form.base_fields['appropriate_grades_min'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_min
-            form.base_fields['appropriate_grades_max'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_max
+            #form.base_fields['appropriate_grades_min'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_min
+            #form.base_fields['appropriate_grades_max'].initial = request.user.account.question_set.latest('last_change_date').appropriate_grades_max
             form.base_fields['tags'].initial = request.user.account.question_set.latest('last_change_date').tags.all()
             form.base_fields['sub_tags'].initial = request.user.account.question_set.latest('last_change_date').sub_tags.all()
 
@@ -147,12 +151,12 @@ class Sub_tagAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return True
 
-class accoutInline(admin.StackedInline):
+class AccoutInline(admin.StackedInline):
     model = Account
     form = AccountForm
 
 class UserAdmin(BaseUserAdmin):
-    inlines=(accoutInline,)
+    inlines=(AccoutInline,)
     
     def has_view_permission(self, request, obj=None):
         return request.user.is_superuser
