@@ -13,15 +13,15 @@ class HardnessInline(admin.StackedInline):
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
-        'a': ['name', 'verification_status', 'text',
+        'a': ['name', ('verification_status', 'verification_comment'), 'text',
          'answer', 'source', ('tags', 'sub_tags'), 'question_maker', 
               ('change_date', 'publish_date')],
-        's': ['name', 'verification_status', 'text',
+        's': ['name', ('verification_status', 'verification_comment'), 'text',
          'answer', 'source', 'events', ('tags', 'sub_tags'), 'question_maker',
               ('change_date', 'publish_date')]
     }
     readonly_fields_types = {
-        'a': ['question_maker', 'change_date', 'publish_date', 'events', 'verification_status'],
+        'a': ['question_maker', 'change_date', 'publish_date', 'events', 'verification_status', 'verification_comment'],
         's': ['question_maker', 'change_date', 'publish_date']
     }
 

@@ -10,8 +10,10 @@ class QuestionForm(forms.ModelForm):
     )
 
     verification_status = forms.ChoiceField(choices=VERIFICATIONS)
+    verification_comment = forms.CharField(required=False)
     text = forms.CharField(widget=MoratabEditor)
     answer = forms.CharField(widget=MoratabEditor, required=False)
+    
 
 class AccountForm(forms.ModelForm):
     ROLES = (

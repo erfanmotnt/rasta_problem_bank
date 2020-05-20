@@ -58,6 +58,7 @@ class Event(models.Model):
 class Question(models.Model):
     name = models.CharField(max_length=200)
     verification_status = models.CharField(max_length=50)
+    verification_comment = models.CharField(max_length=1000, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     sub_tags = models.ManyToManyField(Sub_tag, blank=True)
     events = models.ManyToManyField(Event, blank=True)
