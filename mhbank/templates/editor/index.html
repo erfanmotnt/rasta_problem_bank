@@ -35,16 +35,16 @@
     </div>
 </div>
 </template>
-<input type="text" name="{{ widget.name }}" id="hidden_markdown_{{ widget.name }}"
-       class="hidden_markdown_class"/>
+<textarea name="{{ widget.name }}" id="hidden_markdown_{{ widget.name }}"
+       class="hidden_markdown_class"></textarea>
 
 <script type="text/javascript">
     var content_{{ widget.name }} = "";
     var editor;
-    {% if widget.value != None %} content_{{ widget.name }} = "{{ widget.value|stringformat:'s' }}"{% endif %}
+    {% if widget.value != None %} content_{{ widget.name }} = "{{ widget.value|escapejs }}"{% endif %}
     $("#hidden_markdown_{{ widget.name }}").val(content_{{ widget.name }});
     $("#hidden_markdown_{{ widget.name }}").focus(()=>{
-        $(".hidden_markdown_class").attr("type","text");
+        $(".hidden_markdown_class").show();
         $("#container_only").remove();
         $("#hidden_markdown_{{ widget.name }}").after($("#temp_{{ widget.name }}").html());
         editor = $('#moratab_{{ widget.name }}').moratab(content_{{ widget.name }},
@@ -53,6 +53,6 @@
             content_{{ widget.name }} = textContent;
                 $("#hidden_markdown_{{ widget.name }}").val(textContent);
             });
-        $("#hidden_markdown_{{ widget.name }}").attr("type","hidden");
+        $("#hidden_markdown_{{ widget.name }}").hide();
     });
 </script>

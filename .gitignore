@@ -1,1 +1,17 @@
 manage.py
+
+__pycache__/
+db.sqlite3
+static/media/
+.idea/
+venv/
+*.pyc
+*.pyo
+*.mo
+*~
+.coverage
+uwsgi.ini
+log/**
+!log/placeholder
+/static/**
+**/static/media/**
