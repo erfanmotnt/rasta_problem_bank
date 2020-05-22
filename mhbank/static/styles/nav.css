@@ -1,0 +1,127 @@
+.my-nav {
+    padding: 10px 0;
+    transition: 0.5s;
+}
+
+.my-nav.fixed-top {
+    z-index: 100000;
+}
+
+.my-nav.active-nav {
+    background: var(--gray-4);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 0;
+}
+
+.without-nav .my-nav {
+    display: none
+}
+
+.nav-padding {
+    padding-top: 80px;
+}
+
+.without-nav .nav-padding {
+    padding-top: 0;
+}
+
+.rtl-nav {
+    direction: rtl
+}
+
+.rtl-nav .nav-link {
+    text-align: right
+}
+
+.my-nav .nav-logo {
+    padding: 5px
+}
+
+.nol .nav-link,
+.nol .navbar-toggler {
+    display: none
+}
+
+.nol .nav-logo {
+    display: block
+}
+
+.my-nav .nav-logo>img {
+    height: 35px;
+    animation: logo_vib 2s infinite;
+}
+
+ul.navbar-nav {
+    padding: 0
+}
+
+@keyframes logo_vib {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(1.01) rotate(8deg);
+    }
+
+    70% {
+        transform: scale(1.05) rotate(-1deg);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.my-nav .navbar-brand {
+    padding: 0;
+}
+
+.my-nav .nav-link {
+    color: black;
+    transition: 0.3s;
+    font-size: 20px;
+    background: #fafafa;
+    box-shadow: 0 1px 1px rgba(10, 60, 0, 0.5);
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+.text-hover-shadow:hover,
+.text-hover-shadow:focus {
+    text-shadow: 3px 2px 2px #33333355;
+}
+
+.hover-shadow {
+    transition: 0.3s;
+}
+
+.my-nav .nav-link.signup-link {
+    background: #34aa05;
+    color: white;
+    transition: 0.3s;
+}
+
+.my-nav .nav-link.signup-link.hover-shadow:hover,
+.my-nav .nav-link.signup-link.hover-shadow:focus,
+.hover-shadow:hover,
+.hover-shadow:focus,
+.my-nav .nav-link.activate {
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.1), 0 3px 1px rgba(0, 0, 0, 0.2);
+    background: gray;
+    color: white;
+}
+
+.my-nav .navbar-toggler {
+    background: #55555555;
+    border: 1px solid #fafafa88;
+    margin-left: 3px;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.my-nav .dropdown:hover>.dropdown-menu {
+    display: block;
+}
