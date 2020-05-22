@@ -5,7 +5,51 @@
 {% endblock styles %}
 {% block base_content %}
 <div style="height: calc(100vh - 65px);">
-salam :)))
+<div class=q-all>
+    <div class=q-speci>
+        <span class=q-name>{{question.name}}</span>
+        <span class=q-id>{{question.id}}</span>
+        <span class=adder-name>{{question.question_maker}} طراح:</span>
+    </div>
+    <div class=q-body>
+        <div clas=q-text>
+            <h1 class=q-title>متن سوال</h1>
+            {{question.text}}
+        </div>
+        <div>
+            <h1 class=q-title>پاسخ</h1>
+            {{question.answer}}
+        </div>
+    </div>
+</div>
+<div class="q-filter menu">
+    <h2 class=filter-title>تگ ها</h2>
+    <lu class=tag-v>
+        {% for tag in question.tags.all %}
+            <li class=tag-v>{{tag.name}}</li>
+        {% endfor %}
+    </lu>
+    <h2 class=filter-title>زیر تگ ها</h2>
+    <lu class=tag-v>
+        {% for tag in question.sub_tags.all %}
+            <li class=tag-v>{{tag.name}}</li>
+        {% endfor %}
+    </lu>
+    <h2 class=filter-title>سطح سوال</h2>
+    <span class=hardness-level-v>{{question.hardness.level}}</span>
+    <span class=hardness-age-v>{{question.hardness.appropriate_grades_max}} الی {{question.hardness.appropriate_grades_min}}</span>
+    <h2 class=filter-title>جاهایی که استفاده شده</h2>
+
+    <lu class=event-v>
+        {% for event in question.events.all %}
+            <li class=event-v>{{event.name}}</li>
+        {% endfor %}
+    </lu>
+    <h2 class=filter-title>منبع</h2>
+    {% if question.source %}    
+        <span class=source-v>{{question.source}}</span>
+    {% endif %}
+</div>
 </div>
 {% endblock base_content %}
 {% block scripts %}
