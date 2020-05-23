@@ -1,28 +1,103 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block styles %}
+<style>
+    body{
+        direction: rtl;
+        font-size: medium;
+    }
+    .q-all{
+        float: right;
+        padding:20px;
+        width: 70%;
+        height: 100%;
+        background-color: wheat;
+    }
+    .q-text{
+        clear:both;
+        border: solid;
+    }
+    .q-speci{
+        list-style-type: none;
+        float: right;
+        right: 10px;
+        border-bottom:solid coral;
+    }
+    
+    li.q-name, li.q-id, li.adder-name{
+        padding: 5px;
+        display: inline;
+    }
+    .q-title, .filter-title{
+        text-align: center;
+        margin: 15px;
+        clear: both;
+    }
+    li.tag-v{
+        background-color: darkgoldenrod;
+        padding: 5px;
+        margin: 10px;
+        border-radius: 3px;
+        float: right;
+        display: inline;
+    }
+    lu.tag-v{
+        margin: 15px;
+        color: white;
+    }
+    lu.event-v, .source-v{
+        list-style-type: none;
+        float: right;
+        margin-right: 20px;
+        text-align: right;
+    }
+    li.event-v{
+        margin: 10px;
+    }
+    .q-filter-menu{
+        float: left;
+        width: 30%;
+        position: relative;
+        left: 0;
+        background-color:rgb(2, 160, 160);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        height: 100%;
+    }
 
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    .hardness-level-v, .hardness-age-v{
+        margin: 10px;
+        float: right;
+        text-align: right;
+    }
+    .mark-down{
+        text-align: right;
+    }
+</style>
 {% endblock styles %}
+
 {% block base_content %}
 <div style="height: calc(100vh - 65px);">
 <div class=q-all>
-    <div class=q-speci>
-        <span class=q-name>{{question.name}}</span>
-        <span class=q-id>{{question.id}}</span>
-        <span class=adder-name>{{question.question_maker}} طراح:</span>
+    <lu class=q-speci>
+        <li class=q-name><h4 style="display:inline;">{{question.name}}</h4></li>
+        <li class=q-id>شناسه: {{question.id}}</li>
+        <li class=adder-name>طراح: {{question.question_maker}}</li>
+    </lu>
+    <div clas=q-text>
+        <h2 class=q-title>متن سوال</h2>
+        <p class=mark-down>{{question.text}}</p>
     </div>
-    <div class=q-body>
-        <div clas=q-text>
-            <h1 class=q-title>متن سوال</h1>
-            {{question.text}}
-        </div>
-        <div>
-            <h1 class=q-title>پاسخ</h1>
-            {{question.answer}}
-        </div>
+    <div>
+        <h2 class=q-title>پاسخ</h2>
+        <p class=mark-down>{{question.answer}}</p>
     </div>
 </div>
-<div class="q-filter menu">
+<div class="q-filter-menu">
     <h2 class=filter-title>تگ ها</h2>
     <lu class=tag-v>
         {% for tag in question.tags.all %}
@@ -36,13 +111,13 @@
         {% endfor %}
     </lu>
     <h2 class=filter-title>سطح سوال</h2>
-    <span class=hardness-level-v>{{question.hardness.level}}</span>
-    <span class=hardness-age-v>{{question.hardness.appropriate_grades_max}} الی {{question.hardness.appropriate_grades_min}}</span>
+    <span class=hardness-level-v>سطح: {{question.hardness.level}}</span>
+    <span class=hardness-age-v> برای پایه ها از{{question.hardness.appropriate_grades_min}} تا {{question.hardness.appropriate_grades_max}}</span>
     <h2 class=filter-title>جاهایی که استفاده شده</h2>
 
     <lu class=event-v>
         {% for event in question.events.all %}
-            <li class=event-v>{{event.name}}</li>
+            <li class=event-v>{{event.name}} </li>
         {% endfor %}
     </lu>
     <h2 class=filter-title>منبع</h2>
