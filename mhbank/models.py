@@ -65,7 +65,7 @@ class Question(models.Model):
     source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
     text = models.CharField(max_length=3000)
-    answer = models.CharField(max_length=3000, null=True, blank=True)
+    #answer = models.CharField(max_length=3000, null=True, blank=True)
     #lots of answer
     publish_date = models.DateTimeField('date published')
     change_date = models.DateTimeField('date changed', null=True)
