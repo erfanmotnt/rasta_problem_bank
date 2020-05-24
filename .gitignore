@@ -15,5 +15,3 @@ log/**
 !log/placeholder
 /static/**
 **/static/media/**
-
-/staticfiles/
