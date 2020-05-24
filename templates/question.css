@@ -1,0 +1,75 @@
+body{
+    direction: rtl;
+    font-size: medium;
+}
+.q-all{
+    float: right;
+    padding:20px;
+    width: 70%;
+    height: 100%;
+    background-color: wheat;
+}
+.q-text{
+    clear:both;
+    border: solid;
+}
+.q-speci{
+    list-style-type: none;
+    float: right;
+    right: 10px;
+    border-bottom:solid coral;
+}
+
+li.q-name, li.q-id, li.adder-name{
+    padding: 5px;
+    display: inline;
+}
+.q-title, .filter-title{
+    text-align: center;
+    margin: 15px;
+    clear: both;
+}
+li.tag-view{
+    background-color: darkgoldenrod;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 3px;
+    float: right;
+    display: inline;
+}
+lu.tag-view{
+    margin: 15px;
+    color: white;
+}
+lu.event-v, .source-v{
+    list-style-type: none;
+    float: right;
+    margin-right: 20px;
+    text-align: right;
+}
+li.event-v{
+    margin: 10px;
+}
+.q-filter-menu{
+    float: left;
+    width: 30%;
+    position: relative;
+    left: 0;
+    background-color:rgb(2, 160, 160);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    height: 100%;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.hardness-level-v, .hardness-age-v{
+    margin: 10px;
+    float: right;
+    text-align: right;
+}
+.mark-down{
+    text-align: right;
+}

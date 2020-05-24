@@ -5,127 +5,198 @@
     body{
         direction: rtl;
         font-size: medium;
+        text-align: right;
     }
-    .q-all{
-        float: right;
-        padding:20px;
-        width: 70%;
-        height: 100%;
-        background-color: wheat;
-    }
-    .q-text{
-        clear:both;
-        border: solid;
-    }
-    .q-speci{
-        list-style-type: none;
-        float: right;
-        right: 10px;
-        border-bottom:solid coral;
+   
+    h4.select-box{
+        margin-bottom: 10px;
     }
     
-    li.q-name, li.q-id, li.adder-name{
-        padding: 5px;
-        display: inline;
+    lu.select-box{
+        background-color: rgba(0, 0, 0, 0);
+        box-shadow: none;
+        height: auto;
     }
-    .q-title, .filter-title{
-        text-align: center;
-        margin: 15px;
-        clear: both;
+    li.select-box{
+        display: inline-block;
+        user-select:none;
     }
-    li.tag-v{
-        background-color: darkgoldenrod;
+    div.select-box{
+        padding: 20px;
+        height: 50%;
+    }
+    #subtag{
+        border-top: solid grey;
+    }
+    .check-with-label{
+        display: none;
+    }
+    .label-for-check {
+        background-color: white;
         padding: 5px;
         margin: 10px;
         border-radius: 3px;
         float: right;
         display: inline;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
-    lu.tag-v{
-        margin: 15px;
+    .check-with-label:checked + .label-for-check {
+        background-color: #4CAF50;
         color: white;
     }
-    lu.event-v, .source-v{
-        list-style-type: none;
-        float: right;
-        margin-right: 20px;
-        text-align: right;
+    div.box{
+        border-style: solid;
+        border-color: grey;
+        border-radius: 20px;
+        padding: 0px;
+        width: 50%;
+
     }
-    li.event-v{
-        margin: 10px;
-    }
-    .q-filter-menu{
-        float: left;
-        width: 30%;
-        position: relative;
-        left: 0;
-        background-color:rgb(2, 160, 160);
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        height: 100%;
+     /* Dropdown Button */
+    .addnew-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
     }
 
-    .clearfix::after {
-        content: "";
-        clear: both;
-        display: table;
+    /* Dropdown button on hover & focus */
+    .addnew-button:hover, .addnew-button:focus {
+        background-color: #3e8e41;
     }
-    .hardness-level-v, .hardness-age-v{
-        margin: 10px;
-        float: right;
-        text-align: right;
+
+    /* The search field */
+    #sourceInput {
+        box-sizing: border-box;
+        background-image: url('triangle.png');
+        background-position: 14px 12px;
+        background-repeat: no-repeat;
+        font-size: 16px;
+        padding: 14px 20px 12px 45px;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        border-radius: 7px;
     }
-    .mark-down{
-        text-align: right;
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
     }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f6f6f6;
+        min-width: 230px;
+        border: 1px solid #ddd;
+        z-index: 1;
+        left: 0;
+        right: 0;
+        margin-top: 7px;
+        border-radius: 7px;
+        overflow: auto;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    }
+
+  /* Links inside the dropdown */
+  .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+  }
+
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {background-color: #f1f1f1}
+
+  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+  .show {display:block;} 
+
 </style>
 {% endblock styles %}
-
 {% block base_content %}
 <div style="height: calc(100vh - 65px);">
-<div class=q-all>
-    <lu class=q-speci>
-        <li class=q-name><h4 style="display:inline;">{{question.name}}</h4></li>
-        <li class=q-id>شناسه: {{question.id}}</li>
-        <li class=adder-name>طراح: {{question.question_maker}}</li>
-    </lu>
-    <div clas=q-text>
-        <h2 class=q-title>متن سوال</h2>
-        <p class=mark-down>{{question.text}}</p>
+    <div class=box>
+        <div class=select-box>
+            <h4 class=select-box>تگ</h4>
+            <lu class=select-box multiple>
+                {% for tag in tags %}
+                    <li class="select-box" value={{tag.name}}>                
+                        {% with tag.id|stringformat:"s" as tag_id %}
+                            {% with "tag-"|add:tag_id as obj_id %}
+                                <input type="checkbox" class="check-with-label" id={{obj_id}} />
+                                <label class="label-for-check" for={{obj_id}}>{{ tag.name }}</label>
+                            {% endwith %}
+                        {% endwith %}
+                    </li>
+                {% endfor %}
+            </lu>
+        </div>
+        <div id=subtag class=select-box>
+            <h4 class=select-box>زیرتگ</h4>
+            <lu class=select-box multiple>
+                {% for tag in subtags %}
+                    <li class="select-box" value={{tag.name}}>                
+                        {% with tag.id|stringformat:"s" as tag_id %}
+                            {% with "subtag-"|add:tag_id as obj_id %}
+                                <input type="checkbox" class="check-with-label" id={{obj_id}} />
+                                <label class="label-for-check" for={{obj_id}}>{{ tag.name }}</label>
+                            {% endwith %}
+                        {% endwith %}
+                    </li>
+                {% endfor %}
+            </lu>
+        </div>
     </div>
-    <div>
-        <h2 class=q-title>پاسخ</h2>
-        <p class=mark-down>{{question.answer}}</p>
+    <div class="dropdown">
+        <input type="text" placeholder="المپیاد ملی روسیه ۲۰۱۹" id="sourceInput" onkeyup="filterFunction()">
+        <div id="sourceDropdown" class="dropdown-content">
+          {% for source in sources %}
+              <a onclick=changeSourceInput(this)>{{source.name}}</a>
+          {% endfor %}
+          <button onclick="window.location.href='https://w3docs.com';" class="addnew-button">منبع جدید</button>
+        </div>
     </div>
-</div>
-<div class="q-filter-menu">
-    <h2 class=filter-title>تگ ها</h2>
-    <lu class=tag-v>
-        {% for tag in question.tags.all %}
-            <li class=tag-v>{{tag.name}}</li>
-        {% endfor %}
-    </lu>
-    <h2 class=filter-title>زیر تگ ها</h2>
-    <lu class=tag-v>
-        {% for tag in question.sub_tags.all %}
-            <li class=tag-v>{{tag.name}}</li>
-        {% endfor %}
-    </lu>
-    <h2 class=filter-title>سطح سوال</h2>
-    <span class=hardness-level-v>سطح: {{question.hardness.level}}</span>
-    <span class=hardness-age-v> برای پایه ها از{{question.hardness.appropriate_grades_min}} تا {{question.hardness.appropriate_grades_max}}</span>
-    <h2 class=filter-title>جاهایی که استفاده شده</h2>
-
-    <lu class=event-v>
-        {% for event in question.events.all %}
-            <li class=event-v>{{event.name}} </li>
-        {% endfor %}
-    </lu>
-    <h2 class=filter-title>منبع</h2>
-    {% if question.source %}    
-        <span class=source-v>{{question.source}}</span>
-    {% endif %}
-</div>
 </div>
 {% endblock base_content %}
 {% block scripts %}
+<script>
+    function filterFunction() {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById("sourceInput");
+      filter = input.value.toUpperCase();
+      div = document.getElementById("sourceDropdown");
+      a = div.getElementsByTagName("a");
+      for (i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          a[i].style.display = "";
+        } else {
+          a[i].style.display = "none";
+        }
+      }
+    }
+    function changeSourceInput(elmnt) {
+        document.getElementById("sourceInput").value = elmnt.textContent;
+    }
+    $(document).click(function (e)
+    {
+        var container = $("#sourceInput");
+        if (!container.is(e.target))
+        {
+            $('#sourceDropdown').hide();
+        }
+        else{
+            $('#sourceDropdown').show();
+            
+        }
+    });
+    </script>
+    
 {% endblock scripts %}
