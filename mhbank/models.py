@@ -65,7 +65,7 @@ class Question(models.Model):
     source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
     text = models.CharField(max_length=3000)
-    answer = models.CharField(max_length=3000, null=True, blank=True)
+    #answer = models.CharField(max_length=3000, null=True, blank=True)
     #guidance = models.CharField(max_length=1000)
     publish_date = models.DateTimeField('date published')
     change_date = models.DateTimeField('date changed', null=True)
@@ -103,6 +103,41 @@ class Themed_q(models.Model):
     text = models.CharField(max_length=3000)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=3000)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    change_date = models.DateTimeField('date changed')
+    #guidances
+    #comments
+    #is it original?(not student writen)
+    #likes
+    #teaches
+
+class Guidance(models.Model):
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    text = models.CharField(max_length=1000)
+    change_date = models.DateTimeField('date changed')
+
+
+class Teach_box(models.Model):
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    goal = models.CharField(max_length=1000, null=True, blank=True)
+    expectations = models.CharField(max_length=1000, null=True, blank=True)
+    #notes
+    time = models.TimeField(null=True)
+    generalـprocess = models.CharField(max_length=3000)
+    change_date = models.DateTimeField('date changed')
+
+'''
+class Note(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    teach_box = models.ForeignKey(Teach_box, on_delete=models.CASCADE, null=True)
+    text = models.CharField(max_length=1000)
+    writer = models.ForeignKey(Account, on_delete=models.CASCADE)
+    #change date
+'''
 
 '''
 from mhbank.models import Question, Hardness

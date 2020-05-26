@@ -14,10 +14,10 @@ class HardnessInline(admin.StackedInline):
 class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
         'a': ['name', ('verification_status', 'verification_comment'), 'text',
-         'answer', 'source', ('tags', 'sub_tags'), 'question_maker', 
+         'source', ('tags', 'sub_tags'), 'question_maker', 
               ('change_date', 'publish_date')],
         's': ['name', ('verification_status', 'verification_comment'), 'text',
-         'answer', 'source', 'events', ('tags', 'sub_tags'), 'question_maker',
+         'source', 'events', ('tags', 'sub_tags'), 'question_maker',
               ('change_date', 'publish_date')]
     }
     readonly_fields_types = {
@@ -75,9 +75,7 @@ class QuestionAdmin(admin.ModelAdmin):
         form = super(QuestionAdmin, self).get_form(request, obj, **kwargs)
         if request.user.is_anonymous:
             return form
-        if obj is None:
-            form.base_fields['answer'].initial = "please write answer"
-            
+        
         if(obj is None and request.user.account.question_set.exists() > 0):
             #form.base_fields['level'].initial = request.user.account.question_set.latest('publish_date').level
             form.base_fields['source'].initial = request.user.account.question_set.latest('publish_date').source
