@@ -21,6 +21,10 @@
         display: inline-block;
         user-select:none;
     }
+    li.select-box-subtag{
+        display: none;
+        user-select:none;
+    }
     div.select-box{
         padding: 20px;
         height: 50%;
@@ -49,8 +53,54 @@
         border-color: grey;
         border-radius: 20px;
         padding: 0px;
+        width: 45%;
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .input-box {
+        box-sizing: border-box;
+        font-size: 16px;
+        padding: 14px 20px 12px 20px;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        border-radius: 7px;
+        display: inline;
+        width: 60%;
+    }
+    #level{
+        width: 20%;
+    }
+    .spec{
+        width: 30%;
+        margin-left: 15%;
+        margin-right: 15%;
+        margin-bottom: 30px;
+    }
+    button.send {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: auto;
+        display: block;
         width: 50%;
+    }
 
+    button.send:hover, button.send:focus {
+        background-color: #3e8e41;
+    }
+    .propertys{
+        position: relative;
+        width: 70%;
+        margin: auto;
+        height: 50%;
+        overflow: auto;
+        margin-bottom: 30px;
     }
      /* Dropdown Button */
     .addnew-button {
@@ -79,12 +129,16 @@
         border: none;
         border-bottom: 1px solid #ddd;
         border-radius: 7px;
+        
     }
 
     /* The container <div> - needed to position the dropdown content */
     .dropdown {
-        position: relative;
+        position: absolute;
         display: inline-block;
+        top: 0;
+        right: 0;
+        width: 45%;
     }
 
     /* Dropdown Content (Hidden by Default) */
@@ -92,7 +146,6 @@
         display: none;
         position: absolute;
         background-color: #f6f6f6;
-        min-width: 230px;
         border: 1px solid #ddd;
         z-index: 1;
         left: 0;
@@ -101,7 +154,7 @@
         border-radius: 7px;
         overflow: auto;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+        width: 100%;
     }
 
   /* Links inside the dropdown */
@@ -121,48 +174,60 @@
 </style>
 {% endblock styles %}
 {% block base_content %}
-<div style="height: calc(100vh - 65px);">
-    <div class=box>
-        <div class=select-box>
-            <h4 class=select-box>تگ</h4>
-            <lu class=select-box multiple>
-                {% for tag in tags %}
-                    <li class="select-box" value={{tag.name}}>                
-                        {% with tag.id|stringformat:"s" as tag_id %}
-                            {% with "tag-"|add:tag_id as obj_id %}
-                                <input type="checkbox" class="check-with-label" id={{obj_id}} />
-                                <label class="label-for-check" for={{obj_id}}>{{ tag.name }}</label>
-                            {% endwith %}
-                        {% endwith %}
-                    </li>
-                {% endfor %}
-            </lu>
+<div style="height: calc(100vh - 65px);">   
+    <div class=spec>
+        <input type="text" placeholder="نام سوال" class=input-box>
+        <input type="text" placeholder="سختی" class=input-box id="level">
+    </div>
+    
+    <div class=propertys>
+        <div class="dropdown">
+            <input type="text" placeholder="المپیاد ملی روسیه ۲۰۱۹" id="sourceInput" onkeyup="filterFunction()">
+            <div id="sourceDropdown" class="dropdown-content">
+            {% for source in sources %}
+                <a onclick=changeSourceInput(this)>{{source.name}}</a>
+            {% endfor %}
+            <button onclick="window.location.href='https://w3docs.com';" class="addnew-button">منبع جدید</button>
+            </div>
         </div>
-        <div id=subtag class=select-box>
-            <h4 class=select-box>زیرتگ</h4>
-            <lu class=select-box multiple>
-                {% for tag in subtags %}
-                    <li class="select-box" value={{tag.name}}>                
+        <div class=box>
+            <div class=select-box>
+                <h4 class=select-box>تگ</h4>
+                <lu class=select-box multiple>
+                    {% for tag in tags %}
+                        <li class="select-box" value={{tag.name}}>                
+                            {% with tag.id|stringformat:"s" as tag_id %}
+                                {% with "tag-"|add:tag_id as obj_id %}
+                                    <input type="checkbox" class="check-with-label" onchange=filterSubTagsFunction(this) id={{obj_id}} />
+                                    <label class="label-for-check" for={{obj_id}} >{{ tag.name }}</label>
+                                {% endwith %}
+                            {% endwith %}
+                        </li>
+                    {% endfor %}
+                </lu>
+            </div>
+            <div id=subtag class=select-box>
+                <h4 class=select-box>زیرتگ</h4>
+                <lu class=select-box multiple id="subtaglu">
+                    {% for tag in subtags %}
                         {% with tag.id|stringformat:"s" as tag_id %}
                             {% with "subtag-"|add:tag_id as obj_id %}
-                                <input type="checkbox" class="check-with-label" id={{obj_id}} />
-                                <label class="label-for-check" for={{obj_id}}>{{ tag.name }}</label>
+                                {% with "li-"|add:obj_id as li_id%}
+                                    <li class="select-box-subtag" value={{tag.parent.id}} id={{li_id}}>                
+                                        <input type="checkbox" class="check-with-label" id={{obj_id}} />
+                                        <label class="label-for-check" for={{obj_id}}>{{ tag.name }}</label>
+                                    </li>
+                                {% endwith %}
                             {% endwith %}
                         {% endwith %}
-                    </li>
-                {% endfor %}
-            </lu>
+                    {% endfor %}
+                </lu>
+            </div>
+            
         </div>
     </div>
-    <div class="dropdown">
-        <input type="text" placeholder="المپیاد ملی روسیه ۲۰۱۹" id="sourceInput" onkeyup="filterFunction()">
-        <div id="sourceDropdown" class="dropdown-content">
-          {% for source in sources %}
-              <a onclick=changeSourceInput(this)>{{source.name}}</a>
-          {% endfor %}
-          <button onclick="window.location.href='https://w3docs.com';" class="addnew-button">منبع جدید</button>
-        </div>
-    </div>
+    <button type="submit" class="send">ثبت سوال</button>
+
 </div>
 {% endblock base_content %}
 {% block scripts %}
@@ -197,6 +262,24 @@
             
         }
     });
+    function filterSubTagsFunction(obj) {
+        var lis;
+        lu = document.getElementById("subtaglu");
+        lis = lu.getElementsByTagName("li");
+        for (i = 0; i < lis.length; i++) {
+            console.log("tag-"+lis[i].value);
+            console.log(obj.id);
+            if ("tag-"+lis[i].value == obj.id) {
+                if(obj.checked){
+                    lis[i].style.display = "inline-block";
+                    console.log("is checked");
+                } else{
+                    lis[i].style.display = "none";
+                    lis[i].getElementsByTagName("input")[0].checked = false;
+                }
+            }
+        }
+      
+    }
     </script>
-    
 {% endblock scripts %}
