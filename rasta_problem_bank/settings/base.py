@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'import_export',
     'mhbank',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
