@@ -64,7 +64,7 @@ class Question(models.Model):
     events = models.ManyToManyField(Event, blank=True)
     source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
-    text = models.CharField(max_length=3000)
+    text = models.CharField(max_length=3000) #change to text field
     #answer = models.CharField(max_length=3000, null=True, blank=True)
     #lots of answer
     publish_date = models.DateTimeField('date published')
@@ -93,20 +93,23 @@ class Hardness(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=3000)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE) #change name to writer
     #guidances
-
+    #time
     #comments
     #is it original?(not student writen)
     #likes
     #teaches
 
 class Guidance(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE) #remove
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=1000)
+    #writer
+    #change date
 
 class Teach_box(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE) #remove
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True)
     goal = models.CharField(max_length=1000)
     expectations = models.CharField(max_length=1000)
@@ -129,7 +132,10 @@ class Attempt(models.Model):
     time = models.IntegerField(default=0)
     date = models.DateTimeField()
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-
+    #point
+    # feed back: mafhoom boodan
+    # sakhti
+    # dastanesh
 
 class Themed_q(models.Model):
     theme = models.CharField(max_length=200)
