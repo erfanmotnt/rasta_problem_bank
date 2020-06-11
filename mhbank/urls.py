@@ -1,13 +1,14 @@
 from django.urls import path
-from mhbank import views
+from rest_framework.authtoken.views import obtain_auth_token
 
-from . import views
+from .views.questionview import *
+from .views.accountview import *
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('question/', views.question_list),
-    path('question/<int:pk>/', views.question_detail),
+    path('question/', question_list.as_view()),
+    path('question/<int:pk>/', question_detail),
 
-    path('account/', views.account_list),
-    path('account/<int:pk>/', views.account_detail),
+    path('account/', account_list),
+    path('account/<int:pk>/', account_detail),
+    path('login/', obtain_auth_token),
 ]

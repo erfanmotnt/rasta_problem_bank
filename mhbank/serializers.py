@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from mhbank.models import Question, Account
 
+
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
