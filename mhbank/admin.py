@@ -6,6 +6,13 @@ import datetime
 from .models import Question, Account, Tag, Sub_tag, Event, Source, Hardness
 from .forms import QuestionForm, AccountForm, HardnessForm
 
+# admin.site.register(Account)
+# admin.site.register(Tag)
+# admin.site.register(Sub_tag)
+# admin.site.register(Event)
+# admin.site.register(Source)
+# admin.site.register(Hardness)
+#
 class HardnessInline(admin.StackedInline):
     model = Hardness
     form = HardnessForm
@@ -14,7 +21,7 @@ class HardnessInline(admin.StackedInline):
 class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
         'a': ['name', ('verification_status', 'verification_comment'), 'text',
-         'source', ('tags', 'sub_tags'), 'question_maker', 
+         'source', ('tags', 'sub_tags'), 'question_maker',
               ('change_date', 'publish_date')],
         's': ['name', ('verification_status', 'verification_comment'), 'text',
          'source', 'events', ('tags', 'sub_tags'), 'question_maker',
@@ -39,7 +46,7 @@ class QuestionAdmin(admin.ModelAdmin):
         if not change:
             obj.question_maker = request.user.account
             obj.publish_date = timezone.localtime()
-        
+
         if obj.question_maker.role == 'a':
             obj.verification_status = 'w'
 
@@ -66,7 +73,7 @@ class QuestionAdmin(admin.ModelAdmin):
         else:
             self.readonly_fields = self.readonly_fields_types['s']
             self.fields = self.fields_types['s']
-        
+
         return super().change_view(
             request, object_id, form_url, extra_context=extra_context,
         )
@@ -75,7 +82,7 @@ class QuestionAdmin(admin.ModelAdmin):
         form = super(QuestionAdmin, self).get_form(request, obj, **kwargs)
         if request.user.is_anonymous:
             return form
-        
+
         if(obj is None and request.user.account.question_set.exists() > 0):
             #form.base_fields['level'].initial = request.user.account.question_set.latest('publish_date').level
             form.base_fields['source'].initial = request.user.account.question_set.latest('publish_date').source
@@ -124,7 +131,7 @@ class AccountAdmin(admin.ModelAdmin):
             request, object_id, form_url, extra_context=extra_context,
         )
 
-    
+
 
     def has_view_permission(self, request, obj=None):
         return True
@@ -156,21 +163,22 @@ class AccoutInline(admin.StackedInline):
 
 class UserAdmin(BaseUserAdmin):
     inlines=(AccoutInline,)
-    
+
     def has_view_permission(self, request, obj=None):
         return request.user.is_superuser
 
     def has_add_permission(self, request):
-        return True 
-    
+        return True
+
     def has_change_permission(self, request, obj=None):
         if obj is None:
             return True
-        return request.user.is_superuser  
-    
+        return request.user.is_superuser
+
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Sub_tag, Sub_tagAdmin)
 admin.site.register(Source)
 admin.site.register(Event)
+#

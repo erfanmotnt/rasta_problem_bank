@@ -8,7 +8,6 @@ urlpatterns = [
     path('question/', question_list.as_view()),
     path('question/<int:pk>/', question_detail),
 
-    path('account/', account_list),
-    path('account/<int:pk>/', account_detail),
+    path('account/', AccountView.as_view()),
     path('login/', obtain_auth_token),
 ]
