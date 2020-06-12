@@ -14,7 +14,8 @@ class QuestionSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username']
+        fields = ['username', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
 
 
 class PublicAccountSerializer(serializers.ModelSerializer):
@@ -31,8 +32,11 @@ class PrivateAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = '__all__'
+        extra_kwargs = {'scientific_rate': {'read_only': True}, 'contribution_rate': {'read_only': True}}
 
     def create(self, validated_data):
-        user = User.objects.create(**validated_data['user'])
+        user = User.objects.create(username=validated_data['user']['username'])
+        user.set_password(validated_data['user']['password'])
+        user.save()
         validated_data['user'] = user
         return Account.objects.create(**validated_data)
