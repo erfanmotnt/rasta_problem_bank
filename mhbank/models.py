@@ -64,7 +64,7 @@ class Question(models.Model):
     events = models.ManyToManyField(Event, blank=True)
     source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
-    text = models.CharField(max_length=3000)
+    text = models.TextField()
     #answer = models.CharField(max_length=3000, null=True, blank=True)
     #guidance = models.CharField(max_length=1000)
     publish_date = models.DateTimeField('date published')
@@ -100,15 +100,16 @@ class Attempt(models.Model):
 
 class Themed_q(models.Model):
     theme = models.CharField(max_length=200)
-    text = models.CharField(max_length=3000)
+    text = models.TextField()
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    text = models.CharField(max_length=3000)
+    text = models.TextField()
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     change_date = models.DateTimeField('date changed')
+    publish_date = models.DateTimeField('date published', null=True)
     #guidances
     #comments
     #is it original?(not student writen)
@@ -117,18 +118,20 @@ class Answer(models.Model):
 
 class Guidance(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    text = models.CharField(max_length=1000)
+    text = models.TextField()
     change_date = models.DateTimeField('date changed')
+    publish_date = models.DateTimeField('date published', null=True)
 
 
 class Teach_box(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    goal = models.CharField(max_length=1000, null=True, blank=True)
-    expectations = models.CharField(max_length=1000, null=True, blank=True)
+    goal = models.TextField(null=True, blank=True)
+    expectations = models.TextField(null=True, blank=True)
     #notes
     time = models.TimeField(null=True)
-    generalـprocess = models.CharField(max_length=3000)
+    generalـprocess = models.TextField()
     change_date = models.DateTimeField('date changed')
+    publish_date = models.DateTimeField('date published', null=True)
 
 '''
 class Note(models.Model):
