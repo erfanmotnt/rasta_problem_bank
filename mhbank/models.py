@@ -22,6 +22,13 @@ class Account(models.Model):
 
     def numberOfAdds(self):
         return len(self.question_set.all())
+    
+    def is_adder(self):
+        return self.role == 'a'
+    def is_mentor(self):
+        return self.role == 'm'
+    def is_superuser(self):
+        return self.role == 's'
 
 class Source(models.Model):
     name = models.CharField(max_length=200)
