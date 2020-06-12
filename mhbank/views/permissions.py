@@ -1,5 +1,7 @@
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 
+from mhbank.models import Question
+
 NOCHANGE_METHODS = ['POST', 'GET']
 NODELET_METHODS = ['POST', 'GET', 'PUT']
 #SAFE_METHODS = ['POST', 'GET', 'PUT', 'DELET']
@@ -26,9 +28,10 @@ class QuestionPermission(DefualtPermission):
             pk = request.parser_context['kwargs']['pk']
             question = Question.objects.get(pk=pk)
         except:
-            return False
+            return (request.method in SAFE_METHODS)
 
-        return  (request.method in NODELET_METHODS) or \
+
+        return  (request.method in NOCHANGE_METHODS) or \
                 (request.method in SAFE_METHODS and question.question_maker is request.user.account)
 
     def has_mentor_permission(self, request, view):
