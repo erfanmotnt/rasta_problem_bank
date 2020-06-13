@@ -1,14 +1,29 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from mhbank.models import Question, Account
+from mhbank.models import *
+
+
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = '__all__'
+
+
+class HardnessSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Hardness
+        exclude = ['question']
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    answer = AnswerSerializer(many=True)
+    hardness = HardnessSerializer()
+
     class Meta:
         model = Question
-        fields = ['name', 'verification_status', 'verification_comment', 'text',
-                  'source', 'events', 'tags', 'sub_tags', 'question_maker',
-                  'change_date', 'publish_date']
+        fields = '__all__'
+        extra_kwargs = {'question_maker': {'read_only': True}, 'publish_date': {'read_only': True}}
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -40,3 +55,26 @@ class PrivateAccountSerializer(serializers.ModelSerializer):
         user.save()
         validated_data['user'] = user
         return Account.objects.create(**validated_data)
+
+
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
+
+
+class SubTagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Sub_tag
+
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+
+
+class SourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Source
+

@@ -3,10 +3,11 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+
 class Account(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, unique=True, related_name='account')
-    first_name = models.CharField(max_length=30, default ='None')
-    last_name = models.CharField(max_length=30, default = 'None')
+    first_name = models.CharField(max_length=30, default='None')
+    last_name = models.CharField(max_length=30, default='None')
     phone_number = models.CharField(max_length=20)
     email = models.CharField(max_length=200)
     # added_questions
@@ -22,16 +23,20 @@ class Account(models.Model):
 
     def numberOfAdds(self):
         return len(self.question_set.all())
-    
+
     def is_adder(self):
         return self.role == 'a'
+
     def is_mentor(self):
         return self.role == 'm'
+
     def is_superuser(self):
         return self.role == 's'
 
+
 class Source(models.Model):
     name = models.CharField(max_length=200)
+
     # questions
 
     def __str__(self):
@@ -40,9 +45,11 @@ class Source(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=200)
+
     # sub_tags
     def __str__(self):
         return self.name
+
 
 class Sub_tag(models.Model):
     name = models.CharField(max_length=200)
@@ -52,15 +59,14 @@ class Sub_tag(models.Model):
         return self.name
 
 
-
-
 class Event(models.Model):
     name = models.CharField(max_length=200)
+
     # questions
 
     def __str__(self):
         return self.name
-        
+
 
 class Question(models.Model):
     name = models.CharField(max_length=200)
@@ -72,15 +78,17 @@ class Question(models.Model):
     source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
     text = models.CharField(max_length=3000)
-    #answer = models.CharField(max_length=3000, null=True, blank=True)
-    #guidance = models.CharField(max_length=1000)
+    # answer = models.CharField(max_length=3000, null=True, blank=True)
+    # guidance = models.CharField(max_length=1000)
     publish_date = models.DateTimeField('date published')
-    change_date = models.DateTimeField('date changed', null=True)
+    change_date = models.DateTimeField(auto_now=True)
+
     # themed_qs
     # emoj
 
     def __str__(self):
         return self.name
+
 
 class Hardness(models.Model):
     level = models.IntegerField()
@@ -97,6 +105,7 @@ class Hardness(models.Model):
     def __str__(self):
         return str(self.level)
 
+
 class Attempt(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -112,30 +121,32 @@ class Themed_q(models.Model):
 
 
 class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     text = models.CharField(max_length=3000)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    change_date = models.DateTimeField('date changed')
-    #guidances
-    #comments
-    #is it original?(not student writen)
-    #likes
-    #teaches
+    change_date = models.DateTimeField(auto_now=True)
+    # guidances
+    # comments
+    # is it original?(not student writen)
+    # likes
+    # teaches
+
 
 class Guidance(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     text = models.CharField(max_length=1000)
-    change_date = models.DateTimeField('date changed')
+    change_date = models.DateTimeField(auto_now=True)
 
 
 class Teach_box(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     goal = models.CharField(max_length=1000, null=True, blank=True)
     expectations = models.CharField(max_length=1000, null=True, blank=True)
-    #notes
+    # notes
     time = models.TimeField(null=True)
     generalـprocess = models.CharField(max_length=3000)
-    change_date = models.DateTimeField('date changed')
+    change_date = models.DateTimeField(auto_now=True)
+
 
 '''
 class Note(models.Model):
