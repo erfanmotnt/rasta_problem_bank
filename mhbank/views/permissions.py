@@ -86,6 +86,9 @@ class AccountPermission(DefualtPermission):
         
         return self.request.user.account.id == account.id
 
+    def has_adder_permission(self, request, view):
+        return request.method in JUST_VIEW_METHODS and self.is_my_account()
+    
     def has_mentor_permission(self, request, view):
         return request.method in JUST_VIEW_METHODS and self.is_my_account()
 
