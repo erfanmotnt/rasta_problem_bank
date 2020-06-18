@@ -12,7 +12,9 @@ from .views.sourceview import *
 
 router = DefaultRouter()
 router.register('account', AccountView)
+router.register('account/<int:pk>', AccountView)
 router.register('question', QuestionView)
+router.register('question/<int:pk>', QuestionView)
 router.register('tag', TagView)
 router.register('subtag', SubTagView)
 router.register('event', EventView)

@@ -15,19 +15,26 @@ GET = READ
 DELET = DELET
 """
 class DefualtPermission(BasePermission):
+    def has_anonymous_permission(self, request, view):
+        return False 
         
     def has_adder_permission(self, request, view):
         return request.method in JUST_VIEW_METHODS    
     
     def has_mentor_permission(self, request, view):
-        return  request.method in JUST_ADD_METHODS
+        return request.method in JUST_ADD_METHODS
 
     def has_permission(self, request, view):
-        if  (self.has_adder_permission(request, view) and request.user.account.is_adder()) or \
-            (self.has_mentor_permission(request, view) and request.user.account.is_mentor()) or \
-            (request.method in SAFE_METHODS and request.user.account.is_superuser()):
-            return True
-        return False
+        if request.user.is_anonymous :
+            return self.has_anonymous_permission(request, view)
+        elif request.user.account.is_adder() :
+            return self.has_adder_permission(request, view)
+        elif request.user.account.is_mentor() :
+            return self.has_mentor_permission(request, view)
+        elif request.user.account.is_superuser() :
+            return request.method in SAFE_METHODS
+        else :
+            return False
 
 class QuestionPermission(DefualtPermission):
 
@@ -39,6 +46,9 @@ class QuestionPermission(DefualtPermission):
             return False
         
         return self.request.user.account.id == question.question_maker.id
+
+    def has_anonymous_permission(self, request, view):
+        return request.method in JUST_ADD_METHODS
 
     def has_adder_permission(self, request, view):
         return  request.method in JUST_ADD_METHODS or \
@@ -59,6 +69,9 @@ class AnswerPermission(DefualtPermission):
         return  (self.request.user.account.id == answer.question.question_maker.id) or \
                 (self.request.user.account.id == answer.account.id)
 
+    def has_anonymous_permission(self, request, view):
+        return request.method in JUST_ADD_METHODS
+        
     def has_adder_permission(self, request, view):
         return  request.method in ['POST'] or \
                 (request.method in EDIT_AND_DELET_METHODS and self.is_my_object())
@@ -98,7 +111,7 @@ class TagPermission(DefualtPermission):
         return request.method in JUST_VIEW_METHODS
 
 class SubTagPermission(DefualtPermission):
-
+    
     def has_adder_permission(self, request, view):
         return request.method in JUST_ADD_METHODS
 
