@@ -82,7 +82,7 @@ class Question(models.Model):
     # guidance = models.CharField(max_length=1000)
     publish_date = models.DateTimeField('date published')
     change_date = models.DateTimeField(auto_now=True)
-
+    #hardness
     # themed_qs
     # emoj
 
@@ -100,7 +100,7 @@ class Hardness(models.Model):
         default=12,
         validators=[MaxValueValidator(12), MinValueValidator(1)]
     )
-    question = models.OneToOneField(Question, null=True, on_delete=models.CASCADE, related_name='hardness')
+    question = models.OneToOneField(Question, null=True, on_delete=models.CASCADE, related_name='hardnes')
 
     def __str__(self):
         return str(self.level)
