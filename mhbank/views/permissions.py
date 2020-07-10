@@ -45,14 +45,24 @@ class QuestionPermission(DefualtPermission):
         except:
             return False
         
-        return self.request.user.account.id == question.question_maker.id
-
+        return request.user.account.id == question.question_maker.id
+ 
+    def is_waiting(self, request, view):
+        try:
+            pk = request.parser_context['kwargs']['pk']
+            question = Question.objects.get(pk=pk)
+        except:
+            return False
+ 
+        return question.verification_status is 'w'
+        
     def has_anonymous_permission(self, request, view):
-        return request.method in JUST_ADD_METHODS
+        return False
 
     def has_adder_permission(self, request, view):
-        return  request.method in JUST_ADD_METHODS or \
-                (request.method in EDIT_AND_DELET_METHODS and self.is_my_object())
+        return  request.method in ['POST'] or \
+                (request.method in ['GET'] and not (not self.is_my_object(request) and self.is_waiting()) or \
+                (request.method in EDIT_AND_DELET_METHODS and self.is_my_object(request, view))
 
     def has_mentor_permission(self, request, view):
         return request.method in SAFE_METHODS
@@ -66,15 +76,15 @@ class AnswerPermission(DefualtPermission):
         except:
             return False
         
-        return  (self.request.user.account.id == answer.question.question_maker.id) or \
-                (self.request.user.account.id == answer.account.id)
+        return  (request.user.account.id == answer.question.question_maker.id) or \
+                (request.user.account.id == answer.account.id)
 
     def has_anonymous_permission(self, request, view):
         return request.method in JUST_ADD_METHODS
         
     def has_adder_permission(self, request, view):
         return  request.method in ['POST'] or \
-                (request.method in EDIT_AND_DELET_METHODS and self.is_my_object())
+                (request.method in EDIT_AND_DELET_METHODS and self.is_my_object(request, view))
 
     def has_mentor_permission(self, request, view):
         return request.method in SAFE_METHODS
@@ -97,13 +107,13 @@ class AccountPermission(DefualtPermission):
         except:
             return True
         
-        return self.request.user.account.id == account.id
+        return request.user.account.id == account.id
 
     def has_adder_permission(self, request, view):
-        return request.method in JUST_VIEW_METHODS and self.is_my_account()
+        return request.method in JUST_VIEW_METHODS and self.is_my_account(request, view)
     
     def has_mentor_permission(self, request, view):
-        return request.method in JUST_VIEW_METHODS and self.is_my_account()
+        return request.method in JUST_VIEW_METHODS and self.is_my_account(request, view)
 
 class TagPermission(DefualtPermission):
  

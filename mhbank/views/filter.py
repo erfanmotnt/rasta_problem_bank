@@ -1,6 +1,6 @@
 from mhbank.models import Question
 
-def getQuestionsByFilter(tag = None, sub_tags=[], \
+def getQuestionsByFilter(orderField=None ,tag = None, sub_tags=[], \
     verification_status=[], events=[], sources=[], question_makers=[], \
          publish_date_from=None, publish_date_until=None, \
          appropriate_grades_min=None, appropriate_grades_max=None, level_min=None, level_max=None):
@@ -33,16 +33,19 @@ def getQuestionsByFilter(tag = None, sub_tags=[], \
         questions = questions.filter(publish_date__gte=publish_date_from)
 
     if appropriate_grades_max is not None:
-        questions = questions.filter(hardnes__appropriate_grades_max__lte=appropriate_grades_max)
+        questions = questions.filter(hardness__appropriate_grades_max__lte=appropriate_grades_max)
 
     if appropriate_grades_min is not None:
-        questions = questions.filter(hardnes__appropriate_grades_min__gte=appropriate_grades_min)
+        questions = questions.filter(hardness__appropriate_grades_min__gte=appropriate_grades_min)
 
     if level_max is not None:
-        questions = questions.filter(hardnes__level__lte=level_max)
+        questions = questions.filter(hardness__level__lte=level_max)
 
     if level_min is not None:
-        questions = questions.filter(hardnes__level__gte=level_min)
-    
+        questions = questions.filter(hardness__level__gte=level_min)
+        
+    if orderField is not None:
+        questions = questions.order_by(orderField)
+
     return questions
     
