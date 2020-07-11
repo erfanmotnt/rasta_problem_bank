@@ -100,7 +100,7 @@ class Hardness(models.Model):
         default=12,
         validators=[MaxValueValidator(12), MinValueValidator(1)]
     )
-    question = models.OneToOneField(Question, null=True, on_delete=models.CASCADE, related_name='hardnes')
+    question = models.OneToOneField(Question, null=True, on_delete=models.CASCADE, related_name='hardness')
 
     def __str__(self):
         return str(self.level)

@@ -10,14 +10,13 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class HardnessSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Hardness
         exclude = ['question']
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    #answers = AnswerSerializer(many=True)
+    # answers = AnswerSerializer(many=True)
     hardness = HardnessSerializer()
 
     class Meta:
@@ -58,13 +57,11 @@ class PrivateAccountSerializer(serializers.ModelSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Tag
 
 
 class SubTagSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Sub_tag
 
@@ -77,4 +74,21 @@ class EventSerializer(serializers.ModelSerializer):
 class SourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Source
+
+
+class FilterSerializer(serializers.Serializer):
+    sub_tags = serializers.ListField(child=serializers.IntegerField())
+    tag = serializers.IntegerField
+    verification_status = serializers.ListField(child=serializers.CharField())
+    events = serializers.ListField(child=serializers.IntegerField())
+    sources = serializers.ListField(child=serializers.IntegerField())
+    question_makers = serializers.ListField(child=serializers.IntegerField())
+    publish_date_from = serializers.DateTimeField
+    publish_date_until = serializers.DateTimeField
+    appropriate_grades_min = serializers.IntegerField
+    appropriate_grades_max = serializers.IntegerField
+    level_min = serializers.IntegerField
+    level_max = serializers.IntegerField
+    page = serializers.IntegerField
+
 
