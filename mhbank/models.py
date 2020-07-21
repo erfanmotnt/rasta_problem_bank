@@ -76,7 +76,7 @@ class Question(models.Model):
     events = models.ManyToManyField(Event, blank=True)
     source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
-    text = models.CharField(max_length=3000)
+    text = models.TextField()
     # answer = models.CharField(max_length=3000, null=True, blank=True)
     # guidance = models.CharField(max_length=1000)
     publish_date = models.DateTimeField('date published')
@@ -115,13 +115,13 @@ class Attempt(models.Model):
 
 class Themed_q(models.Model):
     theme = models.CharField(max_length=200)
-    text = models.CharField(max_length=3000)
+    text = models.TextField()
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
-    text = models.CharField(max_length=3000)
+    text = models.TextField()
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     change_date = models.DateTimeField(default=timezone.now())
     # guidances
@@ -133,7 +133,7 @@ class Answer(models.Model):
 
 class Guidance(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    text = models.CharField(max_length=1000)
+    text = models.TextField()
     change_date = models.DateTimeField(default=timezone.now())
 
 
@@ -151,7 +151,7 @@ class Teach_box(models.Model):
 class Note(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     teach_box = models.ForeignKey(Teach_box, on_delete=models.CASCADE, null=True)
-    text = models.CharField(max_length=1000)
+    text = models.TextField()
     writer = models.ForeignKey(Account, on_delete=models.CASCADE)
     #change date
 '''
