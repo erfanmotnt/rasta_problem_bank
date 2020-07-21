@@ -54,7 +54,7 @@ class QuestionPermission(DefualtPermission):
         except:
             return False
  
-        return question.verification_status is 'w'
+        return question.verification_status == 'w'
         
     def has_anonymous_permission(self, request, view):
         return False
