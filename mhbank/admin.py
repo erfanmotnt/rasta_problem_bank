@@ -22,20 +22,20 @@ class QuestionAdmin(admin.ModelAdmin):
     fields_types = {
         'a': ['name', ('verification_status', 'verification_comment'), 'text',
          'source', ('tags', 'sub_tags'), 'question_maker',
-              ('change_date', 'publish_date')],
+              ('publish_date')],
         's': ['name', ('verification_status', 'verification_comment'), 'text',
          'source', 'events', ('tags', 'sub_tags'), 'question_maker',
-              ('change_date', 'publish_date')]
+              ('publish_date')]
     }
     readonly_fields_types = {
-        'a': ['question_maker', 'change_date', 'publish_date', 'events', 'verification_status', 'verification_comment'],
-        's': ['question_maker', 'change_date', 'publish_date']
+        'a': ['question_maker', 'publish_date', 'events', 'verification_status', 'verification_comment'],
+        's': ['question_maker', 'publish_date']
     }
 
     fields = fields_types['s']
     readonly_fields = readonly_fields_types['s']
 
-    list_display = ('name', 'verification_status', 'change_date', 'question_maker')
+    list_display = ('name', 'verification_status', 'question_maker')
     list_filter = ['verification_status', 'question_maker']
     form = QuestionForm
     inlines = (HardnessInline,)
@@ -50,7 +50,7 @@ class QuestionAdmin(admin.ModelAdmin):
         if obj.question_maker.role == 'a':
             obj.verification_status = 'w'
 
-        obj.change_date = timezone.localtime()
+        #obj.change_date = timezone.localtime()
         obj.save()
 
     def add_view(self, request, form_url='', extra_context=None):
