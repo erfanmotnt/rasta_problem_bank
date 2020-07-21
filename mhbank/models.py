@@ -123,7 +123,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     text = models.TextField()
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    #change_date = models.DateTimeField(default=timezone.now())
+    change_date = models.DateTimeField(null=True, blank=True)
     # guidances
     # comments
     # is it original?(not student writen)
@@ -134,7 +134,7 @@ class Answer(models.Model):
 class Guidance(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     text = models.TextField()
-    #change_date = models.DateTimeField(default=timezone.now())
+    change_date = models.DateTimeField(null=True, blank=True)
 
 
 class Teach_box(models.Model):
@@ -144,7 +144,7 @@ class Teach_box(models.Model):
     # notes
     time = models.TimeField(null=True)
     generalـprocess = models.CharField(max_length=3000)
-    #change_date = models.DateTimeField(default=timezone.now())
+    change_date = models.DateTimeField(null=True, blank=True)
 
 
 '''
