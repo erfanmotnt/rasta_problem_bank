@@ -60,9 +60,9 @@ class QuestionPermission(DefualtPermission):
         return False
 
     def has_adder_permission(self, request, view):
-        return  request.method in ['POST'] or \
-                (request.method in ['GET'] and not (not self.is_my_object(request) and self.is_waiting()) or \
-                (request.method in EDIT_AND_DELET_METHODS and self.is_my_object(request, view))
+        return  (request.method in ['POST']) or \
+            ((request.method in ['GET']) and  ( self.is_my_object(request) or not self.is_waiting()) ) or \
+            (request.method in EDIT_AND_DELET_METHODS and self.is_my_object(request, view))
 
     def has_mentor_permission(self, request, view):
         return request.method in SAFE_METHODS
