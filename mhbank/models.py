@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-
 class Account(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, unique=True, related_name='account')
     first_name = models.CharField(max_length=30, default='None')
@@ -81,7 +80,7 @@ class Question(models.Model):
     # answer = models.CharField(max_length=3000, null=True, blank=True)
     # guidance = models.CharField(max_length=1000)
     publish_date = models.DateTimeField('date published')
-    change_date = models.DateTimeField(auto_now=True)
+    change_date = models.DateTimeField(default=timezone.now())
     #hardness
     # themed_qs
     # emoj
@@ -124,7 +123,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     text = models.CharField(max_length=3000)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    change_date = models.DateTimeField(auto_now=True)
+    change_date = models.DateTimeField(default=timezone.now())
     # guidances
     # comments
     # is it original?(not student writen)
@@ -135,7 +134,7 @@ class Answer(models.Model):
 class Guidance(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     text = models.CharField(max_length=1000)
-    change_date = models.DateTimeField(auto_now=True)
+    change_date = models.DateTimeField(default=timezone.now())
 
 
 class Teach_box(models.Model):
@@ -145,7 +144,7 @@ class Teach_box(models.Model):
     # notes
     time = models.TimeField(null=True)
     generalـprocess = models.CharField(max_length=3000)
-    change_date = models.DateTimeField(auto_now=True)
+    change_date = models.DateTimeField(default=timezone.now())
 
 
 '''
