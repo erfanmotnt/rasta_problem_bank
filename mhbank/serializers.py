@@ -24,6 +24,15 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'question_maker': {'read_only': True}, 'publish_date': {'read_only': True}}
 
+# class ShortQuestionSerializer(serializers.ModelSerializer):
+#     # answers = AnswerSerializer(many=True)
+#     hardness = HardnessSerializer()
+
+#     class Meta:
+#         model = Question
+#         fields = '__all__'
+
+#         exclude = ['text', 'source', 'events', 'question_maker', 'sub_tags', 'publish_date']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
