@@ -10,7 +10,6 @@ from .views.subtagview import *
 from .views.eventview import *
 from .views.sourceview import *
 from .views.filter import question_filter
-from .views.otherFunctions import get_account_by_username
 
 router = DefaultRouter()
 router.register('account', AccountView)
@@ -26,7 +25,7 @@ urlpatterns = [
     path('signup/', register),
     path('signin/', obtain_auth_token),
     path('qfilter/', question_filter),
-    path('accountbyusername/<slug:username>', get_account_by_username),
+    path('accountbyusername/', account_by_username),
 ]
 
 urlpatterns += router.urls
