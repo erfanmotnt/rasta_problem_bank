@@ -1,7 +1,32 @@
 from django.urls import path
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.routers import DefaultRouter
 
-from . import views
+from .views.questionview import *
+from .views.accountview import *
+from .views.registerView import *
+from .views.tagview import *
+from .views.subtagview import *
+from .views.eventview import *
+from .views.sourceview import *
+from .views.filter import question_filter
+from .views.otherFunctions import get_account_by_username
+
+router = DefaultRouter()
+router.register('account', AccountView)
+router.register('account/<int:pk>', AccountView)
+router.register('question', QuestionView)
+router.register('question/<int:pk>', QuestionView)
+router.register('tag', TagView)
+router.register('subtag', SubTagView)
+router.register('event', EventView)
+router.register('source', SourceView)
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('signup/', register),
+    path('signin/', obtain_auth_token),
+    path('qfilter/', question_filter),
+    path('accountbyusername/<slug:username>', get_account_by_username),
 ]
+
+urlpatterns += router.urls

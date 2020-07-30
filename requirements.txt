@@ -9,3 +9,4 @@ psycopg2==2.8.4
 zeep==3.4.0
 django-import-export==2.0.2
 django-notifications-hq==1.6.0
+djangorestframework==3.11.0
