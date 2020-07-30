@@ -124,6 +124,8 @@ class Answer(models.Model):
     text = models.TextField()
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     change_date = models.DateTimeField(null=True, blank=True)
+    publish_date = models.DateTimeField('date published', null=True, blank=True)
+
     # guidances
     # comments
     # is it original?(not student writen)
@@ -135,6 +137,7 @@ class Guidance(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     text = models.TextField()
     change_date = models.DateTimeField(null=True, blank=True)
+    publish_date = models.DateTimeField('date published', null=True, blank=True)
 
 
 class Teach_box(models.Model):
@@ -145,6 +148,7 @@ class Teach_box(models.Model):
     time = models.TimeField(null=True)
     generalـprocess = models.CharField(max_length=3000)
     change_date = models.DateTimeField(null=True, blank=True)
+    publish_date = models.DateTimeField('date published', null=True, blank=True)
 
 
 '''
