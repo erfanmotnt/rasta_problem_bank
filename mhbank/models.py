@@ -132,7 +132,6 @@ class Answer(models.Model):
     # likes
     # teaches
 
-
 class Guidance(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     text = models.TextField()
@@ -149,7 +148,6 @@ class Teach_box(models.Model):
     generalـprocess = models.CharField(max_length=3000)
     change_date = models.DateTimeField(null=True, blank=True)
     publish_date = models.DateTimeField('date published', null=True, blank=True)
-
 
 '''
 class Note(models.Model):
