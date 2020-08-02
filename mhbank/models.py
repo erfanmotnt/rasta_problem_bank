@@ -88,6 +88,13 @@ class Question(models.Model):
     def __str__(self):
         return self.name
 
+    def tags_name(self):
+        query = Tag.objects.filter(pk__in=self.tags)
+        outList = []
+        for tag in query:
+            outList.append(tag.name)
+        return outList
+
 
 class Hardness(models.Model):
     level = models.IntegerField()

@@ -24,6 +24,11 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'question_maker': {'read_only': True}, 'publish_date': {'read_only': True}}
 
+class QuestionPropertiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ['id', 'account_name', 'users', 'created']
+
 # class ShortQuestionSerializer(serializers.ModelSerializer):
 #     # answers = AnswerSerializer(many=True)
 #     hardness = HardnessSerializer()

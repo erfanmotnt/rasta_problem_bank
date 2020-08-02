@@ -17,15 +17,21 @@ router.register('account/<int:pk>', AccountView)
 router.register('question', QuestionView)
 router.register('question/<int:pk>', QuestionView)
 router.register('tag', TagView)
+router.register('tag/<int:pk>', TagView)
 router.register('subtag', SubTagView)
+router.register('subtag/<int:pk>', SubTagView)
 router.register('event', EventView)
+router.register('event/<int:pk>', EventView)
 router.register('source', SourceView)
+router.register('source/<int:pk>', SourceView)
 
 urlpatterns = [
     path('signup/', register),
     path('signin/', obtain_auth_token),
     path('qfilter/', question_filter),
     path('accountbyusername/', account_by_username),
+    #path('questionproperty/<int:pk>', question_property),
+    
 ]
 
 urlpatterns += router.urls

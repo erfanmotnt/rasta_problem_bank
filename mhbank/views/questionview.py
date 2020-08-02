@@ -1,10 +1,10 @@
 from rest_framework import status, viewsets
-from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework import mixins
+from rest_framework.decorators import api_view, permission_classes
 
 from mhbank.models import Question
 from mhbank.views import permissions
@@ -54,3 +54,11 @@ class QuestionView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Cr
 #             serializer.save()
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+'''
+@api_view()
+@permission_classes((permissions.QuestionPermission,))
+def question_property(request, pk):
+    
+    return Response(q_serializer.data, status=status.HTTP_200_OK)
+'''
