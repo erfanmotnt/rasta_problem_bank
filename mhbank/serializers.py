@@ -113,3 +113,8 @@ class FilterSerializer(serializers.Serializer):
     page = serializers.IntegerField()
 
 
+class QuestionPageSerializer(serializers.Serializer):
+    # answers = AnswerSerializer(many=True)
+    questions = serializers.ListField(child=QuestionSerializer())
+    page_count = serializers.IntegerField()
+        
