@@ -80,21 +80,25 @@ class PrivateAccountSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
+        fields = '__all__'
 
 
 class SubTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sub_tag
+        fields = '__all__'
 
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
+        fields = '__all__'
 
 
 class SourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Source
+        fields = '__all__'
 
 
 class FilterSerializer(serializers.Serializer):
