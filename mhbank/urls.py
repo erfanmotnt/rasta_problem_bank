@@ -14,7 +14,6 @@ from .views.filter import question_filter
 router = DefaultRouter()
 router.register('account', AccountView)
 router.register('account/<int:pk>', AccountView)
-router.register('question', QuestionView)
 router.register('question/<int:pk>', QuestionView)
 router.register('tag', TagView)
 router.register('tag/<int:pk>', TagView)

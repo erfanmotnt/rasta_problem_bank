@@ -54,7 +54,7 @@ class QuestionPermission(DefualtPermission):
         except:
             return False
  
-        return question.verification_status == 'w'
+        return question.verification_status == 'w' or question.verification_status == 'r'
         
     def has_anonymous_permission(self, request, view):
         return (request.method in ['GET']) and not self.is_waiting(request, view) 
