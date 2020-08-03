@@ -89,11 +89,35 @@ class Question(models.Model):
         return self.name
 
     def tags_name(self):
-        query = Tag.objects.filter(pk__in=self.tags)
+        query = Tag.objects.filter(question=self.pk)
         outList = []
         for tag in query:
             outList.append(tag.name)
         return outList
+
+
+    def sub_tags_name(self):
+        query = Sub_tag.objects.filter(question=self.pk)
+        outList = []
+        for tag in query:
+            outList.append(tag.name)
+        return outList
+
+    def events_name(self):
+        query = Event.objects.filter(question=self.pk)
+        outList = []
+        for tag in query:
+            outList.append(tag.name)
+        return outList
+    
+    def source_name(self):
+        query = Source.objects.filter(question=self.pk)
+        return query[0].name if len(query) > 0 else None
+    
+    def question_maker_name(self):
+        query = Account.objects.filter(question=self.pk)
+        return query[0].user.username
+    
 
 
 class Hardness(models.Model):

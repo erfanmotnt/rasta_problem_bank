@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view, permission_classes
 
 from mhbank.models import Question
 from mhbank.views import permissions
-from mhbank.serializers import QuestionSerializer
+from mhbank.serializers import QuestionSerializer, QuestionPropertiesSerializer
 
 
 class QuestionView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
@@ -16,6 +16,13 @@ class QuestionView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Cr
     permission_classes = [permissions.QuestionPermission]
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+
+
+class QuestionPropertiesView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
+                   mixins.UpdateModelMixin):
+    permission_classes = [permissions.QuestionPermission]
+    queryset = Question.objects.all()
+    serializer_class = QuestionPropertiesSerializer
 
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def question_detail(request, pk):
@@ -54,11 +61,3 @@ class QuestionView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Cr
 #             serializer.save()
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-'''
-@api_view()
-@permission_classes((permissions.QuestionPermission,))
-def question_property(request, pk):
-    
-    return Response(q_serializer.data, status=status.HTTP_200_OK)
-'''

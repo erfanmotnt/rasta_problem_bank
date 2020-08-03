@@ -24,13 +24,14 @@ router.register('event', EventView)
 router.register('event/<int:pk>', EventView)
 router.register('source', SourceView)
 router.register('source/<int:pk>', SourceView)
+router.register('questionproperties', QuestionPropertiesView)
+router.register('questionproperties/<int:pk>', QuestionPropertiesView)
 
 urlpatterns = [
     path('signup/', register),
     path('signin/', obtain_auth_token),
     path('qfilter/', question_filter),
     path('accountbyusername/', account_by_username),
-    #path('questionproperty/<int:pk>', question_property),
     
 ]
 
