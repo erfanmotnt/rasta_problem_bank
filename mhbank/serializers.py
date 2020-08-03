@@ -99,17 +99,17 @@ class SourceSerializer(serializers.ModelSerializer):
 
 class FilterSerializer(serializers.Serializer):
     sub_tags = serializers.ListField(child=serializers.IntegerField())
-    tag = serializers.IntegerField
+    tag = serializers.IntegerField(default=-1)
     verification_status = serializers.ListField(child=serializers.CharField())
     events = serializers.ListField(child=serializers.IntegerField())
     sources = serializers.ListField(child=serializers.IntegerField())
     question_makers = serializers.ListField(child=serializers.IntegerField())
-    publish_date_from = serializers.DateTimeField
-    publish_date_until = serializers.DateTimeField
-    appropriate_grades_min = serializers.IntegerField
-    appropriate_grades_max = serializers.IntegerField
-    level_min = serializers.IntegerField
-    level_max = serializers.IntegerField
-    page = serializers.IntegerField
+    publish_date_from = serializers.DateTimeField()
+    publish_date_until = serializers.DateTimeField()
+    appropriate_grades_min = serializers.IntegerField(default=-1)
+    appropriate_grades_max = serializers.IntegerField(default=-1)
+    level_min = serializers.IntegerField(default=-1)
+    level_max = serializers.IntegerField(default=-1)
+    page = serializers.IntegerField()
 
 

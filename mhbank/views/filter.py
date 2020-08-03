@@ -8,13 +8,12 @@ from mhbank.serializers import FilterSerializer, QuestionSerializer
 from mhbank.views.permissions import QuestionPermission
 
 
-def getQuestionsByFilter(orderField=None ,tag=None, sub_tags=[], \
+def getQuestionsByFilter(orderField=None ,tag=-1, sub_tags=[], \
                          verification_status=[], events=[], sources=[], question_makers=[], \
                          publish_date_from=None, publish_date_until=None, \
-                         appropriate_grades_min=None, appropriate_grades_max=None, level_min=None, level_max=None):
+                         appropriate_grades_min=-1, appropriate_grades_max=-1, level_min=-1, level_max=-1, page=None):
     questions = Question.objects.all()
-
-    if tag is not None:
+    if tag != -1:
         questions = questions.filter(tags__id=tag)
 
     if len(sub_tags) != 0:
@@ -38,21 +37,20 @@ def getQuestionsByFilter(orderField=None ,tag=None, sub_tags=[], \
     if publish_date_from is not None:
         questions = questions.filter(publish_date__gte=publish_date_from)
 
-    if appropriate_grades_max is not None:
+    if appropriate_grades_max != -1:
         questions = questions.filter(hardness__appropriate_grades_max__lte=appropriate_grades_max)
 
-    if appropriate_grades_min is not None:
+    if appropriate_grades_min != -1:
         questions = questions.filter(hardness__appropriate_grades_min__gte=appropriate_grades_min)
 
-    if level_max is not None:
+    if level_max != -1:
         questions = questions.filter(hardness__level__lte=level_max)
 
-    if level_min is not None:
+    if level_min != -1:
         questions = questions.filter(hardness__level__gte=level_min)
 
     if orderField is not None:
         questions = questions.order_by(orderField)
-
     return questions.order_by('id')
 
 @api_view()
