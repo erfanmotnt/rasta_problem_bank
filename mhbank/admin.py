@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 import datetime
-from .models import Question, Account, Tag, Sub_tag, Event, Source, Hardness
+from .models import Question, Account, Tag, Sub_tag, Event, Source, Hardness, Answer
 from .forms import QuestionForm, AccountForm, HardnessForm
 
 # admin.site.register(Account)
@@ -181,4 +181,4 @@ admin.site.register(Tag, TagAdmin)
 admin.site.register(Sub_tag, Sub_tagAdmin)
 admin.site.register(Source)
 admin.site.register(Event)
-#
+admin.site.register(Answer)

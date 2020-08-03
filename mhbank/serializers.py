@@ -16,7 +16,7 @@ class HardnessSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    # answers = AnswerSerializer(many=True)
+    answers = AnswerSerializer(many=True)
     hardness = HardnessSerializer()
 
     class Meta:
