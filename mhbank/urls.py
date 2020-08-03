@@ -24,8 +24,8 @@ router.register('event', EventView)
 router.register('event/<int:pk>', EventView)
 router.register('source', SourceView)
 router.register('source/<int:pk>', SourceView)
-router.register('questionproperties', QuestionPropertiesView)
-router.register('questionproperties/<int:pk>', QuestionPropertiesView)
+# router.register('questionproperties', QuestionPropertiesView)
+# router.register('questionproperties/<int:pk>', QuestionPropertiesView)
 
 urlpatterns = [
     path('signup/', register),

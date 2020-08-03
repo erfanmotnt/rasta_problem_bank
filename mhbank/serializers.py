@@ -24,17 +24,17 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'question_maker': {'read_only': True}, 'publish_date': {'read_only': True}}
 
-class QuestionPropertiesSerializer(serializers.ModelSerializer):
-    # answers = AnswerSerializer(many=True)
-    hardness = HardnessSerializer()
+# class QuestionPropertiesSerializer(serializers.ModelSerializer):
+#     # answers = AnswerSerializer(many=True)
+#     hardness = HardnessSerializer()
 
-    class Meta:
-        model = Question
-        fields = ['name', 'verification_status', 'verification_comment', 'tags_name', 'sub_tags_name', \
-            'events_name', 'source_name', 'source_name', 'question_maker_name', 'text', 'publish_date', \
-            'change_date', 'hardness']
+#     class Meta:
+#         model = Question
+#         fields = ['name', 'verification_status', 'verification_comment', 'tags_name', 'sub_tags_name', \
+#             'events_name', 'source_name', 'source_name', 'question_maker_name', 'text', 'publish_date', \
+#             'change_date', 'hardness']
         
-        extra_kwargs = {'question_maker': {'read_only': True}, 'publish_date': {'read_only': True}}
+#         extra_kwargs = {'question_maker': {'read_only': True}, 'publish_date': {'read_only': True}}
 
 # class ShortQuestionSerializer(serializers.ModelSerializer):
 #     # answers = AnswerSerializer(many=True)
