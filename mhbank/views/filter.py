@@ -57,19 +57,20 @@ def getQuestionsByFilter(orderField=None ,tag=-1, sub_tags=[], \
 def getQuestionsByRemovePermitions(request, questions):
     out_list = []
     qp = QuestionPermission()
+    request.method = 'POST'
     for q in questions:
         request.parser_context['kwargs']['pk'] = q.pk
         if qp.has_permission(request, None):
             out_list.append(q)
     return out_list
 
-@api_view(['post'])
+@api_view(['POST'])
 def question_filter(request):
     serializer = FilterSerializer(data=request.data)
     if not serializer.is_valid(raise_exception=True):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     data = serializer.validated_data
-    q_list = getQuestionsByFilter(**data)#getQuestionsByRemovePermitions(request, getQuestionsByFilter(**data))
+    q_list = getQuestionsByRemovePermitions(request, getQuestionsByFilter(**data))
     from django.conf import settings
     paginator = Paginator(q_list, settings.CONSTANTS['PAGINATION_NUMBER'])
     page = paginator.get_page(data.get('page'))
