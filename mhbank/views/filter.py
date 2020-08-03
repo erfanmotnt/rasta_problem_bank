@@ -63,9 +63,9 @@ def getQuestionsByRemovePermitions(request, questions):
             out_list.append(q)
     return out_list
 
-@api_view()
-@permission_classes((QuestionPermission,))
+@api_view(['post'])
 def question_filter(request):
+    print("!!!!!!!!!!")
     serializer = FilterSerializer(data=request.data)
     if not serializer.is_valid(raise_exception=True):
         return Response(status=status.HTTP_400_BAD_REQUEST)
