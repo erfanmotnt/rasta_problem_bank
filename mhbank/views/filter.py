@@ -74,5 +74,5 @@ def question_filter(request):
     from django.conf import settings
     paginator = Paginator(q_list, settings.CONSTANTS['PAGINATION_NUMBER'])
     page = paginator.get_page(data.get('page'))
-    q_serializer = QuestionPageSerializer({'questions':page.object_list, 'page_count':paginator.count})
+    q_serializer = QuestionPageSerializer({'questions':page.object_list, 'page_count':paginator.num_pages})
     return Response(q_serializer.data, status=status.HTTP_200_OK)
