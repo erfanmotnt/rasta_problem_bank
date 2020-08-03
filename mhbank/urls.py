@@ -30,6 +30,7 @@ router.register('source/<int:pk>', SourceView)
 urlpatterns = [
     path('signup/', register),
     path('signin/', obtain_auth_token),
+    path('signout/', signout),
     path('qfilter/', question_filter),
     path('accountbyusername/', account_by_username),
     
