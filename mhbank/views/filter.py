@@ -65,12 +65,11 @@ def getQuestionsByRemovePermitions(request, questions):
 
 @api_view(['post'])
 def question_filter(request):
-    print("!!!!!!!!!!")
     serializer = FilterSerializer(data=request.data)
     if not serializer.is_valid(raise_exception=True):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     data = serializer.validated_data
-    q_list = getQuestionsByRemovePermitions(request, getQuestionsByFilter(**data))
+    q_list = getQuestionsByFilter(**data)#getQuestionsByRemovePermitions(request, getQuestionsByFilter(**data))
     from django.conf import settings
     paginator = Paginator(q_list, settings.CONSTANTS['PAGINATION_NUMBER'])
     page = paginator.get_page(data.get('page'))
