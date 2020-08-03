@@ -57,7 +57,7 @@ def getQuestionsByFilter(orderField=None ,tag=-1, sub_tags=[], \
 def getQuestionsByRemovePermitions(request, questions):
     out_list = []
     qp = QuestionPermission()
-    request.method = 'POST'
+    request.method = 'GET'
     for q in questions:
         request.parser_context['kwargs']['pk'] = q.pk
         if qp.has_permission(request, None):
