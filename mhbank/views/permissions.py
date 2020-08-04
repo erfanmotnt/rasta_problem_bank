@@ -58,9 +58,10 @@ class QuestionPermission(DefualtPermission):
     def is_not_list(self, request):
         try:
             request.parser_context['kwargs']['pk']
-            return True
-        except:
-            return False
+            return request.method in ['GET']
+        except: 
+            pass
+        return False
 
     def has_anonymous_permission(self, request, view):
         return (request.method in ['GET']) and not self.is_waiting(request, view) and self.is_not_list(request)
