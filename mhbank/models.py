@@ -151,7 +151,7 @@ class Themed_q(models.Model):
 
 
 class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True, related_name='answers')
     text = models.TextField()
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     change_date = models.DateTimeField(null=True, blank=True)

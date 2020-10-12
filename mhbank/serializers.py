@@ -9,6 +9,8 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = '__all__'
+        extra_kwargs = {'account': {'read_only': True}}
+
 
 
 class HardnessSerializer(serializers.ModelSerializer):
@@ -37,8 +39,9 @@ class QuestionSerializer(serializers.ModelSerializer):
 
         instance = Question.objects.create(**validated_data)
         for answer_data in answers_data:
+            answer_data['question'] = instance
+            answer_data['account'] = instance.question_maker
             answer = Answer.objects.create(**answer_data)
-            answer.problem = instance
             answer.save()
         hardness = Hardness.objects.create(**hardness_data)
         hardness.problem = instance
