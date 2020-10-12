@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view, permission_classes
 from mhbank.models import Question
 from mhbank.views import permissions
 from mhbank.serializers import QuestionSerializer
+from django.db import transaction
 
 
 class QuestionView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
@@ -17,47 +18,18 @@ class QuestionView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Cr
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        serializer = QuestionSerializer(data=data)
+        if not serializer.is_valid(raise_exception=True):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        data = serializer.validated_data
+        data['question_maker'] = request.user.account
+        instance = serializer.create(data)
+        instance.save()
 
-# class QuestionPropertiesView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
-#                    mixins.UpdateModelMixin):
-#     permission_classes = [permissions.QuestionPermission]
-#     queryset = Question.objects.all()
-#     serializer_class = QuestionPropertiesSerializer
+        response = serializer.to_representation(instance)
+        return Response(response)
 
-# @api_view(['GET', 'PUT', 'DELETE'])
-# def question_detail(request, pk):
-#     try:
-#         question = Question.objects.get(pk=pk)
-#     except Question.DoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-#
-#     if request.method == 'GET':
-#         serializer = QuestionSerializer(question)
-#         return Response(serializer.data)
-#
-#     elif request.method == 'PUT':
-#         data = JSONParser().parse(request)
-#         serializer = QuestionSerializer(question, data=data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
-#
-#     elif request.method == 'DELETE':
-#         question.delete()
-#         return Response()
-#
-#
-# class question_list(APIView):
-#     def get(self, request):
-#         question = Question.objects.all()
-#         serializer = QuestionSerializer(question, many=True)
-#         return Response(serializer.data)
-#
-#     def post(self, request):
-#         data = JSONParser().parse(request)
-#         serializer = QuestionSerializer(data=data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

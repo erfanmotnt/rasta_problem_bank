@@ -1,6 +1,6 @@
 from rasta_problem_bank.settings.base import *
 import sys
-import django_heroku
+#import django_heroku
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*z!3aidedw32xh&1ew(^&5dgd17(ynnmk=s*mo=v2l_(4t_ff('
@@ -19,6 +19,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+STATIC_ROOT = get_environment_var('STATIC_ROOT', 'staticfiles')
 
 LOGGING = {
     'version': 1,
@@ -52,5 +53,5 @@ TESTING = sys.argv[1] == 'test'
 REGISTRATION_FEE = get_environment_var('REGISTRATION_FEE', '500')
 
 # Activate Django-Heroku.
-django_heroku.settings(locals(), test_runner=False)
+#django_heroku.settings(locals(), test_runner=False)
 DOMAIN = get_environment_var('DOMAIN', 'http://kabaraamadalapeste.herokuapp.com')

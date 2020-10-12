@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from mhbank.models import *
+from django.db import transaction
+from django.utils import timezone
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -23,6 +25,43 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = '__all__'
         extra_kwargs = {'question_maker': {'read_only': True}, 'publish_date': {'read_only': True}}
+
+    @transaction.atomic
+    def create(self, validated_data):
+        answers_data = validated_data.pop('answers')
+        hardness_data = validated_data.pop('hardness')
+        tags_data = validated_data.pop('tags')
+        sub_tags_data = validated_data.pop('sub_tags')
+        events_data = validated_data.pop('events')
+        validated_data['publish_date'] = timezone.localtime()
+
+        instance = Question.objects.create(**validated_data)
+        for answer_data in answers_data:
+            answer = Answer.objects.create(**answer_data)
+            answer.problem = instance
+            answer.save()
+        hardness = Hardness.objects.create(**hardness_data)
+        hardness.problem = instance
+        hardness.save()
+        instance.tags.set(tags_data)
+        instance.sub_tags.set(sub_tags_data)
+        instance.events.set(events_data)
+        instance.save()
+        return instance
+
+    @transaction.atomic
+    def update(self, instance, validated_data):    
+        validated_data['pk'] = instance.pk
+        try:
+            hardness = Hardness.objects.filter(problem=instance)[0]
+            validated_data['hardness']['pk'] = hardness.pk
+            hardness.delete()
+        except:
+            pass
+        
+        instance.delete()
+        instance = self.create(validated_data)
+        return instance
 
 # class QuestionPropertiesSerializer(serializers.ModelSerializer):
 #     # answers = AnswerSerializer(many=True)
