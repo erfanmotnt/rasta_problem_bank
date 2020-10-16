@@ -88,6 +88,7 @@ class Question(models.Model):
     def __str__(self):
         return self.name
 
+
     # def tags_name(self):
     #     query = Tag.objects.filter(question=self.pk)
     #     outList = []

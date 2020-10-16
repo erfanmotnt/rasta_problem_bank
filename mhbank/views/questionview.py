@@ -13,7 +13,7 @@ from django.db import transaction
 
 
 class QuestionView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
-                   mixins.UpdateModelMixin):
+                   mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     permission_classes = [permissions.QuestionPermission]
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer

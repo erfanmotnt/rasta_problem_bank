@@ -20,7 +20,7 @@ class HardnessSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    answers = AnswerSerializer(many=True)
+    #answers = AnswerSerializer(many=True)
     hardness = HardnessSerializer()
 
     class Meta:
@@ -30,7 +30,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        answers_data = validated_data.pop('answers')
+        #answers_data = validated_data.pop('answers')
         hardness_data = validated_data.pop('hardness')
         tags_data = validated_data.pop('tags')
         sub_tags_data = validated_data.pop('sub_tags')
@@ -38,13 +38,8 @@ class QuestionSerializer(serializers.ModelSerializer):
         validated_data['publish_date'] = timezone.localtime()
 
         instance = Question.objects.create(**validated_data)
-        for answer_data in answers_data:
-            answer_data['question'] = instance
-            answer_data['account'] = instance.question_maker
-            answer = Answer.objects.create(**answer_data)
-            answer.save()
         hardness = Hardness.objects.create(**hardness_data)
-        hardness.problem = instance
+        hardness.question = instance
         hardness.save()
         instance.tags.set(tags_data)
         instance.sub_tags.set(sub_tags_data)
@@ -53,17 +48,15 @@ class QuestionSerializer(serializers.ModelSerializer):
         return instance
 
     @transaction.atomic
-    def update(self, instance, validated_data):    
-        validated_data['pk'] = instance.pk
-        try:
-            hardness = Hardness.objects.filter(problem=instance)[0]
-            validated_data['hardness']['pk'] = hardness.pk
-            hardness.delete()
-        except:
-            pass
-        
-        instance.delete()
-        instance = self.create(validated_data)
+    def update(self, instance, validated_data):   
+        validated_data['change_date'] = timezone.localtime()
+        Hardness.objects.filter(question=instance).update(**validated_data.pop('hardness'))
+        instance.tags.set(validated_data.pop('tags'))
+        instance.sub_tags.set(validated_data.pop('sub_tags'))
+        instance.events.set(validated_data.pop('events'))
+        instance.save()
+        Question.objects.filter(id=instance.id).update(**validated_data)
+        instance = Question.objects.filter(id=instance.id)[0]
         return instance
 
 # class QuestionPropertiesSerializer(serializers.ModelSerializer):
