@@ -49,11 +49,11 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):   
-        validated_data['change_date'] = timezone.localtime()
         Hardness.objects.filter(question=instance).update(**validated_data.pop('hardness'))
         instance.tags.set(validated_data.pop('tags'))
         instance.sub_tags.set(validated_data.pop('sub_tags'))
         instance.events.set(validated_data.pop('events'))
+        instance.change_date = timezone.localtime()
         instance.save()
         Question.objects.filter(id=instance.id).update(**validated_data)
         instance = Question.objects.filter(id=instance.id)[0]
