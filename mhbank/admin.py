@@ -47,8 +47,8 @@ class QuestionAdmin(admin.ModelAdmin):
             obj.question_maker = request.user.account
             obj.publish_date = timezone.localtime()
 
-        if obj.question_maker.role == 'a':
-            obj.verification_status = 'w'
+        #if obj.question_maker.role == 'a': request.user.account.role
+        #    obj.verification_status = 'w'
 
         #obj.change_date = timezone.localtime()
         obj.save()
