@@ -40,6 +40,3 @@ COPY ./entrypoint.prod.sh /usr/src/app/entrypoint.prod.sh
 
 # copy project
 COPY . /usr/src/app/
-
-# install pipenv
-RUN pip install pipenv
