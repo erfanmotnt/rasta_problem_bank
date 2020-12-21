@@ -11,7 +11,7 @@ then
     echo "PostgreSQL started"
 fi
 
-pipenv run python manage.py migrate
-pipenv run python manage.py collectstatic --no-input --clear
+pipenv --python 3.7.4 run python manage.py migrate
+pipenv --python 3.7.4 run python manage.py collectstatic --no-input --clear
 
 exec "$@"
