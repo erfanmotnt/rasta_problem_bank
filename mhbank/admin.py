@@ -117,7 +117,11 @@ class QuestionAdmin(admin.ModelAdmin):
             id=obj.id).exists()
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('user', 'numberOfAdds')
+    for account in Account.objects.all():
+        account.contribution_rate = account.numberOfAdds()
+        account.save()
+    
+    list_display = ('user', 'contribution_rate')
     form = AccountForm
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
