@@ -10,6 +10,7 @@ from mhbank.models import Comment
 from mhbank.views import permissions
 from mhbank.serializers import CommentSerializer
 from django.db import transaction
+from django.utils import timezone
 
 
 class CommentView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
@@ -26,6 +27,8 @@ class CommentView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Cre
             return Response(status=status.HTTP_400_BAD_REQUEST)
         data = serializer.validated_data
         data['writer'] = request.user.account
+        data['publish_date'] = timezone.localtime()
+
         instance = serializer.create(data)
         instance.save()
 

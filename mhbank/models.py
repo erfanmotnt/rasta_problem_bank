@@ -189,7 +189,10 @@ class Comment(models.Model):
     writer = models.ForeignKey(Account, on_delete=models.CASCADE)
     publish_date = models.DateTimeField('date published', null=True, blank=True)
 
+    def __str__(self):
+        return self.writer.user.username + " " + self.question.name
 
+    
 '''
 from mhbank.models import Question, Hardness
 for q in Question.objects.all():
