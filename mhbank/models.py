@@ -74,7 +74,7 @@ class Question(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     sub_tags = models.ManyToManyField(Sub_tag, blank=True)
     events = models.ManyToManyField(Event, blank=True)
-    source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
+    source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.SET_NULL)
     question_maker = models.ForeignKey(Account, on_delete=models.CASCADE)
     text = models.TextField()
     # answer = models.CharField(max_length=3000, null=True, blank=True)
