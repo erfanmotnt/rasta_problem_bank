@@ -181,14 +181,14 @@ class Teach_box(models.Model):
     change_date = models.DateTimeField(null=True, blank=True)
     publish_date = models.DateTimeField('date published', null=True, blank=True)
 
-'''
-class Note(models.Model):
+
+class Comment(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    teach_box = models.ForeignKey(Teach_box, on_delete=models.CASCADE, null=True)
+    #teach_box = models.ForeignKey(Teach_box, on_delete=models.CASCADE, null=True)
     text = models.TextField()
     writer = models.ForeignKey(Account, on_delete=models.CASCADE)
-    #change date
-'''
+    publish_date = models.DateTimeField('date published', null=True, blank=True)
+
 
 '''
 from mhbank.models import Question, Hardness
