@@ -4,6 +4,13 @@ from mhbank.models import *
 from django.db import transaction
 from django.utils import timezone
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Source
+        fields = '__all__'
+        extra_kwargs = {'writer': {'read_only': True}}
+
+
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:

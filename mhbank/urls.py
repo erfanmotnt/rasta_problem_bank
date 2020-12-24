@@ -2,6 +2,7 @@ from django.urls import path
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.routers import DefaultRouter
 
+from .views.commentview import *
 from .views.questionview import *
 from .views.accountview import *
 from .views.registerView import *
@@ -12,6 +13,8 @@ from .views.sourceview import *
 from .views.filter import question_filter
 
 router = DefaultRouter()
+router.register('comment', CommentView)
+router.register('comment/<int:pk>', CommentView)
 router.register('account', AccountView)
 router.register('account/<int:pk>', AccountView)
 router.register('question', QuestionView)
