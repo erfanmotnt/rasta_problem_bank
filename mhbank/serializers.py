@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Source
+        model = Comment
         fields = '__all__'
         extra_kwargs = {'writer': {'read_only': True}, 'publish_date': {'read_only': True}}
 
