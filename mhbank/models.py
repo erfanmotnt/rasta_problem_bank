@@ -21,7 +21,8 @@ class Account(models.Model):
         return self.user.username
 
     def numberOfAdds(self):
-        contribution_rate = len(self.question_set.all())
+        self.contribution_rate = len(self.question_set.all())
+        self.save()
         return len(self.question_set.all())
 
     def is_adder(self):
