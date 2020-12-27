@@ -29,7 +29,7 @@ class HardnessSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     #answers = AnswerSerializer(many=True)
     hardness = HardnessSerializer()
-
+    comments = CommentSerializer(many=True)
     class Meta:
         model = Question
         fields = '__all__'
@@ -38,6 +38,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         #answers_data = validated_data.pop('answers')
+        comments_data = validated_data.pop('comments')
         hardness_data = validated_data.pop('hardness')
         tags_data = validated_data.pop('tags')
         sub_tags_data = validated_data.pop('sub_tags')
@@ -56,6 +57,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):   
+        validated_data.pop('comments')
         Hardness.objects.filter(question=instance).update(**validated_data.pop('hardness'))
         instance.tags.set(validated_data.pop('tags'))
         instance.sub_tags.set(validated_data.pop('sub_tags'))
