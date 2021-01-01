@@ -15,7 +15,7 @@ from django.utils import timezone
 
 class CommentView(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
                    mixins.UpdateModelMixin, mixins.DestroyModelMixin):
-    permission_classes = [permissions.DefualtPermission]
+    permission_classes = [permissions.CommentPermission]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 

@@ -36,6 +36,14 @@ class DefualtPermission(BasePermission):
         else :
             return False
 
+class CommentPermission(DefualtPermission):
+
+    def has_adder_permission(self, request, view):
+        return request.method in JUST_ADD_METHODS
+
+    def has_mentor_permission(self, request, view):
+        return request.method in SAFE_METHODS
+
 class QuestionPermission(DefualtPermission):
 
     def is_my_object(self, request, view):
