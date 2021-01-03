@@ -56,6 +56,8 @@ class QuestionPermission(DefualtPermission):
         return request.user.account.id == question.question_maker.id
  
     def is_waiting(self, request, view):
+        return False
+        ###
         try:
             pk = request.parser_context['kwargs']['pk']
             question = Question.objects.get(pk=pk)
@@ -63,6 +65,7 @@ class QuestionPermission(DefualtPermission):
             return False
  
         return question.verification_status == 'w' or question.verification_status == 'r'
+        
     def is_not_list(self, request):
         try:
             request.parser_context['kwargs']['pk']
