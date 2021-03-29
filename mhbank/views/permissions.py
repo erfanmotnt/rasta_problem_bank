@@ -94,7 +94,7 @@ class QuestionPermission(DefualtPermission):
 
     def has_adder_permission(self, request, view):
         return ( (request.method in ['POST']) or \
-            ((request.method in ['GET']) and  ( self.is_my_object(request, view) or not self.is_waiting(request, view)) and is_not_private(request)) or \
+            ((request.method in ['GET']) and  ( self.is_my_object(request, view) or not self.is_waiting(request, view)) and self.is_not_private(request)) or \
             (request.method in EDIT_AND_DELET_METHODS and self.is_my_object(request, view)) ) \
             #and self.is_not_list(request)
 
