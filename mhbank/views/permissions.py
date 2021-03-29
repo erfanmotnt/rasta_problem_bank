@@ -90,7 +90,7 @@ class QuestionPermission(DefualtPermission):
 
     def has_anonymous_permission(self, request, view):
         return (request.method in ['GET']) and not self.is_waiting(request, view) \
-            and self.is_not_list(request) and is_not_private(request)
+            and self.is_not_list(request) and self.is_not_private(request)
 
     def has_adder_permission(self, request, view):
         return ( (request.method in ['POST']) or \
