@@ -74,14 +74,29 @@ class QuestionPermission(DefualtPermission):
             pass
         return False
 
+    def is_not_private(self, request):
+        try:
+            pk = request.parser_context['kwargs']['pk']
+            question = Question.objects.get(pk=pk)
+        except:
+            return False
+
+        try:
+            question.tags.all().get(pk=16)
+        except:
+            return True
+
+        return False
+
     def has_anonymous_permission(self, request, view):
-        return (request.method in ['GET']) and not self.is_waiting(request, view) and self.is_not_list(request)
+        return (request.method in ['GET']) and not self.is_waiting(request, view) \
+            and self.is_not_list(request) and is_not_private(request)
 
     def has_adder_permission(self, request, view):
         return ( (request.method in ['POST']) or \
             ((request.method in ['GET']) and  ( self.is_my_object(request, view) or not self.is_waiting(request, view)) ) or \
             (request.method in EDIT_AND_DELET_METHODS and self.is_my_object(request, view)) ) \
-            #and self.is_not_list(request)
+            and is_not_private(request) #and self.is_not_list(request)
 
     def has_mentor_permission(self, request, view):
         return request.method in SAFE_METHODS
