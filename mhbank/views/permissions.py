@@ -81,13 +81,31 @@ class QuestionPermission(DefualtPermission):
         except:
             return False
 
+        for event in question.events.all():
+            try:
+                if event.access == "private" and\
+                    request.user.account not in event.mentors.all():
+                    return False
+            except:
+                return False
+        return True
+    
+    def im_mentor(self, request, view):
         try:
-            question.tags.all().get(pk=16)
+            pk = request.parser_context['kwargs']['pk']
+            question = Question.objects.get(pk=pk)
         except:
-            return True
+            return False
 
+        for event in question.events.all():
+            try:
+                if event.access is "private" and\
+                    request.user.account in event.account.mentors.all():
+                    return True
+            except:
+                return False
         return False
-
+    
     def has_anonymous_permission(self, request, view):
         return (request.method in ['GET']) and not self.is_waiting(request, view) \
             and self.is_not_list(request) and self.is_not_private(request)
@@ -95,7 +113,9 @@ class QuestionPermission(DefualtPermission):
     def has_adder_permission(self, request, view):
         return ( (request.method in ['POST']) or \
             ((request.method in ['GET']) and  ( self.is_my_object(request, view) or not self.is_waiting(request, view)) and self.is_not_private(request)) or \
-            (request.method in EDIT_AND_DELET_METHODS and self.is_my_object(request, view)) ) \
+            (request.method in EDIT_AND_DELET_METHODS and self.is_my_object(request, view)) or\
+            (request.method in SAFE_METHODS and self.im_mentor(request, view)) )
+                
             #and self.is_not_list(request)
 
     def has_mentor_permission(self, request, view):
