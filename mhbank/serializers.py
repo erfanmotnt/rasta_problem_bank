@@ -162,6 +162,10 @@ class FilterSerializer(serializers.Serializer):
     level_max = serializers.IntegerField(default=-1)
     page = serializers.IntegerField()
 
+class ScoreQuestionSerializer(serializers.Serializer):
+    question = serializers.IntegerField(default=-1)
+    score = serializers.IntegerField(default=0)
+
 
 class QuestionPageSerializer(serializers.Serializer):
     # answers = AnswerSerializer(many=True)

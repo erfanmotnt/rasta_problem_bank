@@ -11,6 +11,7 @@ from .views.subtagview import *
 from .views.eventview import *
 from .views.sourceview import *
 from .views.filter import question_filter
+from .views.scoring import score_question
 
 router = DefaultRouter()
 router.register('comment', CommentView)
@@ -36,7 +37,7 @@ urlpatterns = [
     path('signout/', signout),
     path('qfilter/', question_filter),
     path('accountbyusername/', account_by_username),
-    
+    path('scorequestion/', score_question),
 ]
 
 urlpatterns += router.urls
