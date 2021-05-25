@@ -201,7 +201,10 @@ class Comment(models.Model):
     def __str__(self):
         return self.writer.user.username + " " + self.question.name
 
+class LessonPlan(models.Model):
+    questions = models.ManyToManyField(Question, blank=True)
     
+
 '''
 from mhbank.models import Question, Hardness
 for q in Question.objects.all():
