@@ -44,6 +44,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         sub_tags_data = validated_data.pop('sub_tags')
         events_data = validated_data.pop('events')
         validated_data['publish_date'] = timezone.localtime()
+        validated_data['score'] = 0
 
         instance = Question.objects.create(**validated_data)
         hardness = Hardness.objects.create(**hardness_data)
@@ -58,6 +59,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):   
         validated_data.pop('comments')
+        validated_data.pop('score')
         Hardness.objects.filter(question=instance).update(**validated_data.pop('hardness'))
         instance.tags.set(validated_data.pop('tags'))
         instance.sub_tags.set(validated_data.pop('sub_tags'))
