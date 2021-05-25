@@ -62,7 +62,8 @@ class Sub_tag(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=200)
-
+    access = models.CharField(max_length=30, default="public")
+    mentors = models.ManyToManyField(Account, blank=True)
     # questions
 
     def __str__(self):
