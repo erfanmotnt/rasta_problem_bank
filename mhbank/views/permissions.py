@@ -160,8 +160,9 @@ class SubTagPermission(DefualtPermission):
         return request.method in JUST_ADD_METHODS
 
 class EventPermission(DefualtPermission):
-    pass
-
+    def has_adder_permission(self, request, view):
+        return request.method in JUST_ADD_METHODS
+    
 class SourcePermission(DefualtPermission):
 
     def has_adder_permission(self, request, view):
