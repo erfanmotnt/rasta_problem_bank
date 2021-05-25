@@ -203,6 +203,11 @@ class Comment(models.Model):
 
 class LessonPlan(models.Model):
     questions = models.ManyToManyField(Question, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
+    sub_tags = models.ManyToManyField(Sub_tag, blank=True)
+    writer = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    publish_date = models.DateTimeField('date published', null=True)
+    change_date = models.DateTimeField(null=True, blank=True)
     
 
 '''
