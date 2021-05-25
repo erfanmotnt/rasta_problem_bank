@@ -51,7 +51,7 @@ def getQuestionsByFilter(orderField=None ,tag=-1, sub_tags=[], \
 
     if orderField is not None:
         questions = questions.order_by(orderField)
-    return questions.order_by('score')
+    return questions.order_by('-score')
 
 
 def getQuestionsByRemovePermitions(request, questions):
