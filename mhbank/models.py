@@ -86,7 +86,7 @@ class Question(models.Model):
     #hardness
     # themed_qs
     # emoj
-
+    score = models.IntegerField(default=0)
     def __str__(self):
         return self.name
 
@@ -121,7 +121,15 @@ class Question(models.Model):
     #     query = Account.objects.filter(question=self.pk)
     #     return query[0].user.username
     
-
+class AccountScoreQuestion(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='scores')
+    score = models.IntegerField(
+        default=0,
+        validators=[MaxValueValidator(1), MinValueValidator(-1)]
+    )
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    
+    
 
 class Hardness(models.Model):
     level = models.IntegerField()
@@ -190,7 +198,6 @@ class Comment(models.Model):
     text = models.TextField()
     writer = models.ForeignKey(Account, on_delete=models.CASCADE)
     publish_date = models.DateTimeField('date published', null=True, blank=True)
-
     def __str__(self):
         return self.writer.user.username + " " + self.question.name
 
