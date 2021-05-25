@@ -168,3 +168,9 @@ class SourcePermission(DefualtPermission):
     def has_adder_permission(self, request, view):
         return request.method in JUST_ADD_METHODS
     
+
+class LessonPlanPermission(DefualtPermission):
+
+    def has_adder_permission(self, request, view):
+        return request.method in JUST_ADD_METHODS
+    

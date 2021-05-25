@@ -171,4 +171,35 @@ class QuestionPageSerializer(serializers.Serializer):
     # answers = AnswerSerializer(many=True)
     questions = serializers.ListField(child=QuestionSerializer())
     num_pages = serializers.IntegerField()
+
+
+class LessonPlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LessonPlan
+        fields = '__all__'
+        extra_kwargs = {'writer': {'read_only': True}, 'publish_date': {'read_only': True}}
+
+    @transaction.atomic
+    def create(self, validated_data):
+        question_data = validated_data.pop('questions')
+        tags_data = validated_data.pop('tags')
+        sub_tags_data = validated_data.pop('sub_tags')
+        validated_data['publish_date'] = timezone.localtime()
         
+        instance = LessonPlan.objects.create(**validated_data)
+        instance.questions.set(question_data)
+        instance.tags.set(tags_data)
+        instance.sub_tags.set(sub_tags_data)
+        instance.save()
+        return instance
+
+    @transaction.atomic
+    def update(self, instance, validated_data):   
+        instance.questions.set(validated_data.pop('questions'))
+        instance.tags.set(validated_data.pop('tags'))
+        instance.sub_tags.set(validated_data.pop('sub_tags'))
+        instance.change_date = timezone.localtime()
+        instance.save()
+        LessonPlan.objects.filter(id=instance.id).update(**validated_data)
+        instance = LessonPlan.objects.filter(id=instance.id)[0]
+        return instance

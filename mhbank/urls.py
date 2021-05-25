@@ -10,6 +10,7 @@ from .views.tagview import *
 from .views.subtagview import *
 from .views.eventview import *
 from .views.sourceview import *
+from .views.lessonplanview import *
 from .views.filter import question_filter
 from .views.scoring import score_question
 
@@ -28,6 +29,8 @@ router.register('event', EventView)
 router.register('event/<int:pk>', EventView)
 router.register('source', SourceView)
 router.register('source/<int:pk>', SourceView)
+router.register('lessonplan', LessonPlanView)
+router.register('lessonplan/<int:pk>', LessonPlanView)
 # router.register('questionproperties', QuestionPropertiesView)
 # router.register('questionproperties/<int:pk>', QuestionPropertiesView)
 
