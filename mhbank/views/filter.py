@@ -8,13 +8,13 @@ from mhbank.serializers import FilterSerializer, QuestionPageSerializer
 from mhbank.views.permissions import QuestionPermission
 
 
-def getQuestionsByFilter(orderField=None ,tag=-1, sub_tags=[], \
+def getQuestionsByFilter(orderField=None ,tags=-1, sub_tags=[], \
                          verification_status=[], events=[], sources=[], question_makers=[], \
                          publish_date_from=None, publish_date_until=None, \
                          appropriate_grades_min=-1, appropriate_grades_max=-1, level_min=-1, level_max=-1, page=None):
     questions = Question.objects.all()
-    if tag != -1:
-        questions = questions.filter(tags__id=tag)
+    if tags != -1:
+        questions = questions.filter(tags__in=tags).distinct()
 
     if len(sub_tags) != 0:
         questions = questions.filter(sub_tags__in=sub_tags).distinct()

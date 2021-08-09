@@ -149,7 +149,7 @@ class SourceSerializer(serializers.ModelSerializer):
 
 class FilterSerializer(serializers.Serializer):
     sub_tags = serializers.ListField(child=serializers.IntegerField())
-    tag = serializers.IntegerField(default=-1)
+    tags = serializers.ListField(child=serializers.IntegerField())
     verification_status = serializers.ListField(child=serializers.CharField())
     events = serializers.ListField(child=serializers.IntegerField())
     sources = serializers.ListField(child=serializers.IntegerField())
