@@ -13,7 +13,7 @@ def getQuestionsByFilter(orderField=None ,tags=-1, sub_tags=[], \
                          publish_date_from=None, publish_date_until=None, \
                          appropriate_grades_min=-1, appropriate_grades_max=-1, level_min=-1, level_max=-1, page=None):
     questions = Question.objects.all()
-    if tags != -1:
+    if len(tags) != 0:
         questions = questions.filter(tags__in=tags).distinct()
 
     if len(sub_tags) != 0:
