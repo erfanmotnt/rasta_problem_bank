@@ -3,7 +3,7 @@ from rest_framework import serializers
 from mhbank.models import *
 from django.db import transaction
 from django.utils import timezone
-
+import json
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -203,3 +203,127 @@ class LessonPlanSerializer(serializers.ModelSerializer):
         LessonPlan.objects.filter(id=instance.id).update(**validated_data)
         instance = LessonPlan.objects.filter(id=instance.id)[0]
         return instance
+
+
+
+
+
+
+
+
+# from mhbank.models import Question
+# from mhbank.serializers import *
+# q = Question.objects.all()[0]
+# p = convert_question_to_global_problem_json(q)
+# bp = BankProblemSerializer(p)
+# from rest_framework.response import Response
+# Response(bp, content_type="application/json")
+
+
+
+class BankAccountSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    email = serializers.CharField()
+    phone_number = serializers.CharField()
+
+class BankSubtopicSerializer(serializers.Serializer):
+    topic = serializers.CharField()
+    title = serializers.CharField()
+
+class BankBaseProblemSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    topics = serializers.ListField(child=serializers.CharField())
+    subtopics = serializers.ListField(child=BankSubtopicSerializer())
+    source = serializers.CharField()
+    difficulty = serializers.CharField()
+    suitable_for_over = serializers.IntegerField()
+    suitable_for_under = serializers.IntegerField()
+    is_checked = serializers.BooleanField()
+
+class BankCommentSerializer(serializers.Serializer):
+    text = serializers.CharField()
+    author = BankAccountSerializer()
+    
+class BankProblemSerializer(serializers.Serializer):
+    base_problem = BankBaseProblemSerializer(many=False)
+
+    problem_type = serializers.CharField()
+    title = serializers.CharField()
+    
+    author = BankAccountSerializer()
+
+    text = serializers.CharField()
+    publish_date =  serializers.DateTimeField()
+    last_change_date =  serializers.DateTimeField()
+    is_private = serializers.BooleanField()
+    upvoteCount = serializers.IntegerField()
+    
+    # comments = serializers.ListField(child=BankCommentSerializer())
+    #answer = serializers.TextField()
+    
+def convert_level_to_difficulty(level):
+    maxlevel = 100
+    if level/maxlevel < 0.2:
+        return 'VeryEasy'
+    elif level/maxlevel < 0.4:
+        return 'Easy'
+    elif level/maxlevel < 0.6:
+        return 'Medium'
+    elif level/maxlevel < 0.8:
+        return 'Hard'
+    else:
+        return 'VeryHard'
+
+
+def convert_question_to_global_problem(question):
+    class Problem():
+        pass
+    problem = Problem()
+    problem.base_problem = Problem()
+    problem.base_problem.title = question.name
+    problem.base_problem.topics = [tag.name for tag in question.tags.all()]
+    problem.base_problem.subtopics = []
+    for subtag in question.sub_tags.all():
+        st = Problem()
+        st.topic = subtag.parent.name
+        st.title = subtag.name
+        problem.base_problem.subtopics.append(st)
+    problem.base_problem.source = question.source.name if question.source else None
+    problem.base_problem.difficulty = convert_level_to_difficulty(question.hardness.level)
+    problem.base_problem.suitable_for_over = question.hardness.appropriate_grades_min
+    problem.base_problem.suitable_for_under = question.hardness.appropriate_grades_max
+    problem.base_problem.is_checked = False
+    
+    problem.problem_type = 'DescriptiveProblem'
+    problem.title = question.name
+    
+    problem.author = Problem()
+    problem.author.email = question.question_maker.email
+    problem.author.phone_number = question.question_maker.phone_number
+    problem.author.first_name = question.question_maker.first_name
+    problem.author.last_name = question.question_maker.last_name
+    
+    problem.text = question.text
+    problem.publish_date = question.publish_date
+    problem.last_change_date = question.change_date
+    problem.is_private = False
+    problem.upvoteCount = question.score
+    # problem.answer = question.answer.text
+
+    # problem.comments = []
+    # for comment in question.comments.all():
+    #     c = Problem()
+    #     c.text = comment.text
+    #     c.author = Problem()
+    #     c.author.email = comment.writer.email
+    #     problem.comments.append(c)
+    return problem
+    
+def convert_all_question_to_global_problem_json():
+    problems = []
+    for question in Question.objects.all():
+        problem = convert_question_to_global_problem(question)
+        problems.append(problem)
+    problems_json = json.dumps(BankProblemSerializer(problems, many=True).data, ensure_ascii=False)
+    return problems_json
