@@ -231,25 +231,20 @@ class BankSubtopicSerializer(serializers.Serializer):
     topic = serializers.CharField()
     title = serializers.CharField()
 
-class BankBaseProblemSerializer(serializers.Serializer):
-    title = serializers.CharField()
-    topics = serializers.ListField(child=serializers.CharField())
-    subtopics = serializers.ListField(child=BankSubtopicSerializer())
-    source = serializers.CharField()
-    difficulty = serializers.CharField()
-    suitable_for_over = serializers.IntegerField()
-    suitable_for_under = serializers.IntegerField()
-    is_checked = serializers.BooleanField()
-
 class BankCommentSerializer(serializers.Serializer):
     text = serializers.CharField()
     author = BankAccountSerializer()
     
 class BankProblemSerializer(serializers.Serializer):
-    base_problem = BankBaseProblemSerializer(many=False)
+    title = serializers.CharField()
+    topics = serializers.ListField(child=serializers.CharField())
+    subtopics = serializers.ListField(child=BankSubtopicSerializer())
+    source = serializers.CharField()
+    difficulty = serializers.CharField()
+    grade = serializers.CharField()
+    is_checked = serializers.BooleanField()
 
     problem_type = serializers.CharField()
-    title = serializers.CharField()
     
     author = BankAccountSerializer()
 
@@ -257,7 +252,7 @@ class BankProblemSerializer(serializers.Serializer):
     publish_date =  serializers.DateTimeField()
     last_change_date =  serializers.DateTimeField()
     is_private = serializers.BooleanField()
-    upvoteCount = serializers.IntegerField()
+    upvote_count = serializers.IntegerField()
     
     # comments = serializers.ListField(child=BankCommentSerializer())
     #answer = serializers.TextField()
@@ -293,7 +288,6 @@ def convert_question_to_global_problem(question):
     class Problem():
         pass
     problem = Problem()
-    problem = Problem()
     problem.title = question.name
     problem.topics = [tag.name for tag in question.tags.all()]
     problem.subtopics = []
@@ -304,7 +298,7 @@ def convert_question_to_global_problem(question):
         problem.subtopics.append(st)
     problem.source = question.source.name if question.source else None
     problem.difficulty = convert_level_to_difficulty(question.hardness.level)
-    problem.suitable_for_over = 'HighSchoolFirstHalf'
+    problem.grade = 'HighSchoolFirstHalf'
     problem.is_checked = False
     
     problem.problem_type = 'DescriptiveProblem'
@@ -320,7 +314,6 @@ def convert_question_to_global_problem(question):
     problem.last_change_date = question.change_date
     problem.is_private = False
     problem.upvote_count = question.score
-    problem.copied_from = None
     
     # problem.answer = question.answer.text
 
@@ -330,6 +323,7 @@ def convert_question_to_global_problem(question):
     #     c.text = comment.text
     #     c.author = Problem()
     #     c.author.email = comment.writer.email
+    #     c.publish_date = cooment.publish_date()
     #     problem.comments.append(c)
     return problem
     
