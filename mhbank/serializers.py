@@ -275,18 +275,18 @@ def convert_level_to_difficulty(level):
     else:
         return 'VeryHard'
 
-def convert_appropriate_grades_to_grade(grade_min, grade_max):
-    maxlevel = 100
-    if level/maxlevel < 0.2:
-        return 'VeryEasy'
-    elif level/maxlevel < 0.4:
-        return 'Easy'
-    elif level/maxlevel < 0.6:
-        return 'Medium'
-    elif level/maxlevel < 0.8:
-        return 'Hard'
-    else:
-        return 'VeryHard'
+# def convert_appropriate_grades_to_grade(grade_min, grade_max):
+#     maxlevel = 100
+#     if level/maxlevel < 0.2:
+#         return 'VeryEasy'
+#     elif level/maxlevel < 0.4:
+#         return 'Easy'
+#     elif level/maxlevel < 0.6:
+#         return 'Medium'
+#     elif level/maxlevel < 0.8:
+#         return 'Hard'
+#     else:
+#         return 'VeryHard'
 
 
 def convert_question_to_global_problem(question):
@@ -304,9 +304,7 @@ def convert_question_to_global_problem(question):
         problem.subtopics.append(st)
     problem.source = question.source.name if question.source else None
     problem.difficulty = convert_level_to_difficulty(question.hardness.level)
-    problem.suitable_for_over = \
-        convert_appropriate_grades_to_grade(question.hardness.appropriate_grades_min,\
-        question.hardness.appropriate_grades_max)
+    problem.suitable_for_over = 'HighSchoolFirstHalf'
     problem.is_checked = False
     
     problem.problem_type = 'DescriptiveProblem'
