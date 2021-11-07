@@ -275,28 +275,41 @@ def convert_level_to_difficulty(level):
     else:
         return 'VeryHard'
 
+def convert_appropriate_grades_to_grade(grade_min, grade_max):
+    maxlevel = 100
+    if level/maxlevel < 0.2:
+        return 'VeryEasy'
+    elif level/maxlevel < 0.4:
+        return 'Easy'
+    elif level/maxlevel < 0.6:
+        return 'Medium'
+    elif level/maxlevel < 0.8:
+        return 'Hard'
+    else:
+        return 'VeryHard'
+
 
 def convert_question_to_global_problem(question):
     class Problem():
         pass
     problem = Problem()
-    problem.base_problem = Problem()
-    problem.base_problem.title = question.name
-    problem.base_problem.topics = [tag.name for tag in question.tags.all()]
-    problem.base_problem.subtopics = []
+    problem = Problem()
+    problem.title = question.name
+    problem.topics = [tag.name for tag in question.tags.all()]
+    problem.subtopics = []
     for subtag in question.sub_tags.all():
         st = Problem()
         st.topic = subtag.parent.name
         st.title = subtag.name
-        problem.base_problem.subtopics.append(st)
-    problem.base_problem.source = question.source.name if question.source else None
-    problem.base_problem.difficulty = convert_level_to_difficulty(question.hardness.level)
-    problem.base_problem.suitable_for_over = question.hardness.appropriate_grades_min
-    problem.base_problem.suitable_for_under = question.hardness.appropriate_grades_max
-    problem.base_problem.is_checked = False
+        problem.subtopics.append(st)
+    problem.source = question.source.name if question.source else None
+    problem.difficulty = convert_level_to_difficulty(question.hardness.level)
+    problem.suitable_for_over = \
+        convert_appropriate_grades_to_grade(question.hardness.appropriate_grades_min,\
+        question.hardness.appropriate_grades_max)
+    problem.is_checked = False
     
     problem.problem_type = 'DescriptiveProblem'
-    problem.title = question.name
     
     problem.author = Problem()
     problem.author.email = question.question_maker.email
@@ -308,7 +321,9 @@ def convert_question_to_global_problem(question):
     problem.publish_date = question.publish_date
     problem.last_change_date = question.change_date
     problem.is_private = False
-    problem.upvoteCount = question.score
+    problem.upvote_count = question.score
+    problem.copied_from = None
+    
     # problem.answer = question.answer.text
 
     # problem.comments = []
